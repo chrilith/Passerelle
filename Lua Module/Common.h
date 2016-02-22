@@ -4,13 +4,16 @@
 #include <Windows.h>
 
 #if LEGACY_MODE == 1
-#	define LUALIB_NAME	"saitek"
+#	define _LIB_NAME	"saitek"
+#	define _LIB_OPEN	luaopen_saitek
 #else
-#	define LUALIB_NAME	"passerelle"
+#	define _LIB_NAME	"passerelle"
+#	define _LIB_OPEN	luaopen_passerelle
 #endif
 
+#define LUALIB_NAME		_LIB_NAME
 #define LUALIB_IDENT	LUALIB_NAME "LuaLib"
 #define LUALIB_TABLE	LUALIB_IDENT "Data"
-#define LUALIB_OPEN()	int __declspec(dllexport) __cdecl luaopen_ ## LUALIB_NAME(lua_State* L)
+#define LUALIB_OPEN( )	int __declspec(dllexport) __cdecl _LIB_OPEN (lua_State* L)
 
 #endif
