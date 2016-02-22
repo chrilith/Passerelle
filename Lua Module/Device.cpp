@@ -219,9 +219,9 @@ void DeviceManager::Set(int index) {
 	HID[index].type = gt;
 	HID[index].instance = gi;
 	
-	strcpy(HID[index].instanceID, dd.instanceID);
-	strcpy(HID[index].name, dd.name);
-	strcpy(HID[index].serialNumber, dd.serialNumber);
+	strcpy_s(HID[index].instanceID, dd.instanceID);
+	strcpy_s(HID[index].name, dd.name);
+	strcpy_s(HID[index].serialNumber, dd.serialNumber);
 }
 
 int DeviceManager::HandleDeviceChange(void *hDevice, bool bAdded) {
