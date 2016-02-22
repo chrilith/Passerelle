@@ -1,4 +1,5 @@
-#include <Windows.h>
+#include "Common.h"
+
 #include <atlimage.h>
 #include <tchar.h>
 
@@ -140,7 +141,7 @@ static void luaF_RegisterConst(lua_State* L, const Const *list) {
 	lua_replace(L, LUA_ENVIRONINDEX);
 }
 
-extern "C" int __declspec(dllexport) __cdecl luaopen_saitek(lua_State* L) {
+extern "C" LUALIB_OPEN() {
 	// Initialize
 	DevMan->Initialize();
 
@@ -167,20 +168,20 @@ extern "C" int __declspec(dllexport) __cdecl luaopen_saitek(lua_State* L) {
 	LUA_END()
 
 	// Register methods
-	luaL_register(L, "saitek", API);
+	luaL_register(L, LUALIB_NAME, API);
 
 	// Set constants
 //	luaF_RegisterConst(L, Errors);
 
 	// Create a meta table for the script data to be collected upon script interruption
-	luaL_newmetatable(L, "LuaSaitekLibData");	
+	luaL_newmetatable(L, LUALIB_TABLE);
 	lua_pushstring(L, "__gc");
 	lua_pushcfunction(L, luaF_Finalizer);
 	lua_settable(L, -3);
 
 	// Create the associated userdata
 	ScriptInfo **dataP = (ScriptInfo **)lua_newuserdata(L, sizeof(ScriptInfo **));
-	luaL_getmetatable(L, "LuaSaitekLibData");
+	luaL_getmetatable(L, LUALIB_TABLE);
 	lua_setmetatable(L, -2);
 
 	// Save it so that it is collected only at the end of the execution

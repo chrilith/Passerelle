@@ -1,4 +1,5 @@
-#include <Windows.h>
+#include "Common.h"
+
 #include <string.h>
 #include <stdio.h>
 #include <dinput.h>
@@ -96,7 +97,7 @@ void DeviceManager::Initialize() {
 
 	//Initialize Saitek DirectOutput
 	_do = new CDirectOutput();
-	HRESULT hdo = _do->Initialize(L"LuaSaitekLib");
+	HRESULT hdo = _do->Initialize(L"" LUALIB_IDENT);
 	if (!SUCCEEDED(hdo)) {
 		_di->Release();
 		return;

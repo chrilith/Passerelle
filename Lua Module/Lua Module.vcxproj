@@ -192,7 +192,6 @@
     <ClCompile Include="..\Libs\Saitek\RawImage.cpp" />
     <ClCompile Include="..\Libs\Saitek\ThreadLock.cpp" />
     <ClCompile Include="Api.cpp" />
-    <ClCompile Include="DirectOutputLib.cpp" />
     <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="SaitekLib.cpp" />
     <ClCompile Include="Device.cpp" />
