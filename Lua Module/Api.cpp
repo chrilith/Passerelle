@@ -15,6 +15,7 @@ extern "C" {
 #include "Device.h"
 #include "Script.h"
 #include "resource.h"
+#include "Api.h"
 
 #ifdef DEBUG
 extern void print(lua_State* L, const char *s);
@@ -30,20 +31,6 @@ extern SaitekDevice HID[HID_COUNT];
 extern int charToWideConverter(const char *s, wchar_t **d);
 extern void s_RenderImage(HDC hdc, LPCTSTR tsz);
 
-int luaX_GetVersion(lua_State* L) {
-	lua_pushstring(L, LIB_VERSION);
-	lua_pushnumber(L, LIB_VERSION_MAJOR);
-	lua_pushnumber(L, LIB_VERSION_MINOR);
-	lua_pushnumber(L, LIB_VERSION_BUILD);
-	lua_pushnumber(L, LIB_VERSION_PATCH);
-	return 5;
-}
-
-int luaX_Initialize(lua_State* L) {
-	return 0;
-}
-
-
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 
@@ -53,16 +40,29 @@ BOOL CALLBACK myCB2(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef) {
 	return DIENUM_CONTINUE;
 }
 
-int luaX_Listen(lua_State* L) {
+LUA_FUNC(GetVersion) {
+	lua_pushstring(L, LIB_VERSION);
+	lua_pushnumber(L, LIB_VERSION_MAJOR);
+	lua_pushnumber(L, LIB_VERSION_MINOR);
+	lua_pushnumber(L, LIB_VERSION_BUILD);
+	lua_pushnumber(L, LIB_VERSION_PATCH);
+	return 5;
+}
+
+LUA_FUNC(Initialize) {
+	return 0;
+}
+
+LUA_FUNC(Release) {
+	return 0;
+}
+
+LUA_FUNC(Listen) {
 	fgetc(stdin);
 	return 0;
 }
 
-int luaX_Release(lua_State* L) {
-	return 0;
-}
-
-int luaX_GetNumDevices(lua_State* L) {
+LUA_FUNC(GetNumDevices) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -94,7 +94,7 @@ int luaX_GetNumDevices(lua_State* L) {
 	return 1;
 }
 
-int luaX_AddPage(lua_State* L) {
+LUA_FUNC(AddPage) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -121,7 +121,7 @@ int luaX_AddPage(lua_State* L) {
 	return 1;
 }
 
-int luaX_RemovePage(lua_State* L) {
+LUA_FUNC(RemovePage) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -146,7 +146,7 @@ int luaX_RemovePage(lua_State* L) {
 	return 1;
 }
 
-int luaX_RegisterDeviceChangeCallback(lua_State* L) {
+LUA_FUNC(RegisterDeviceChangeCallback) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -179,7 +179,7 @@ int luaX_RegisterDeviceChangeCallback(lua_State* L) {
 	return 1;
 }
 
-int luaX_RegisterPageCallback(lua_State* L) {
+LUA_FUNC(RegisterPageCallback) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -226,7 +226,7 @@ int luaX_RegisterPageCallback(lua_State* L) {
 	return 1;
 }
 
-int luaX_RegisterSoftButtonCallback(lua_State* L) {
+LUA_FUNC(RegisterSoftButtonCallback) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -279,7 +279,7 @@ int luaX_RegisterSoftButtonCallback(lua_State* L) {
 	return 1;
 }
 
-int luaX_RegisterSoftButtonUpCallback(lua_State* L) {
+LUA_FUNC(RegisterSoftButtonUpCallback) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -331,7 +331,7 @@ int luaX_RegisterSoftButtonUpCallback(lua_State* L) {
 	return 1;
 }
 
-int luaX_RegisterSoftButtonDownCallback(lua_State* L) {
+LUA_FUNC(RegisterSoftButtonDownCallback) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -381,7 +381,7 @@ int luaX_RegisterSoftButtonDownCallback(lua_State* L) {
 	return 1;
 }
 
-int luaX_SetLed(lua_State* L) {
+LUA_FUNC(SetLed) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -410,7 +410,7 @@ int luaX_SetLed(lua_State* L) {
 	return 1;
 }
 
-int luaX_SetImageFromFile(lua_State* L) {
+LUA_FUNC(SetImageFromFile) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -461,7 +461,7 @@ int luaX_SetImageFromFile(lua_State* L) {
 	return 1;
 }
 
-int luaX_SetImage(lua_State* L) {
+LUA_FUNC(SetImage) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -504,61 +504,9 @@ int luaX_SetImage(lua_State* L) {
 	HRESULT h = DevMan->DO()->SetImage(HID[devIdx].hDevice, pageID, imgIdx, sizeof(img), img);
 	lua_pushnumber(L, GetAPIError(h));
 	return 1;
-
-/*
-	HWND w = GetDesktopWindow();
-	HDC hdc = GetWindowDC(w);
-	HBITMAP bmp = CreateBitmap(320, 240, 1, 24, img);
-	BITMAP bm;
-
-//	StretchDIBits(w, 0, 0, 320, 240, 0, 0, 320, 240, bm.bmBits, bi, 
-
-	HDC cm = CreateCompatibleDC(NULL);
-
-	BITMAPINFO bmpInfo = { 0 };
-    bmpInfo.bmiHeader.biBitCount = 24;
-    bmpInfo.bmiHeader.biHeight = 240;
-    bmpInfo.bmiHeader.biWidth = 320;
-    bmpInfo.bmiHeader.biPlanes = 1;
-    bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-
-	void *bits;// http://www.codeproject.com/Tips/150253/Create-bitmap-from-pixels
-	bmp =CreateDIBSection(cm, &bmpInfo, DIB_RGB_COLORS, &bits, NULL, 0);
-
-	HBITMAP om = (HBITMAP)SelectObject(cm, bmp);
-
-	RECT r;
-	r.top = 0;
-	r.left = 0;
-	r.right = 320;
-	r.bottom = 240;
-//	FillRect(cm, &r, HBRUSH(GetStockObject(WHITE_BRUSH)));
-	StretchBlt(cm, 0, 0, 320, 240, hdc, 0, 0, 320, 240, SRCCOPY);
-
-//	GetObject(bmp, sizeof(BITMAP), &bm);
-//	BITMAPINFO bi = {{ sizeof (BITMAPINFOHEADER), bm.bmWidth, bm.bmHeight, 1, 24 }};
-
-	char *dt = (char*)bits;*/
-	/*
-	*dt = 255;
-	
-	for (int y = 0; y < 240; y++) {
-		for (int x = 0; x < 320; x++) {
-			int a = (x + y * 320) * 3;
-			*(dt + a + 0) = 255;
-			*(dt + a + 1) = 255;
-			*(dt + a + 2) = 255;
-		}
-	}
-	*/
-/*	//	HRESULT h = DevMan->DO()->SetImage(HID[devIdx].hDevice, pageID, imgIdx, sizeof(img), img);
-	HRESULT h = DevMan->DO()->SetImage(HID[devIdx].hDevice, pageID, imgIdx, 320*240*3, dt);
-	lua_pushnumber(L, GetAPIError(h));
-	return 1;*/
 }
 
-
-int luaX_SetString(lua_State* L) {
+LUA_FUNC(SetString) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -593,7 +541,7 @@ int luaX_SetString(lua_State* L) {
 	return 1;
 }
 
-int luaX_SetProfile(lua_State* L) {
+LUA_FUNC(SetProfile) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
