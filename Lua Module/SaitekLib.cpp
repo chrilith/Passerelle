@@ -18,8 +18,6 @@ extern "C" {
 #include "Script.h"
 #include "Api.h"
 
-#include "EntryPoint.h"
-
 // callback ref: http://stackoverflow.com/questions/2688040/how-to-callback-a-lua-function-from-a-c-function
 
 
