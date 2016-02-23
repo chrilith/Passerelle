@@ -2,7 +2,7 @@
 #define SCRIPT_H
 
 #include "Device.h"
-#include "ThreadLock.h"
+#include "Import/Source/ThreadLock.h"
 
 typedef struct _CallbackList {
 	int pageButtonCallbackRef;

@@ -11,7 +11,7 @@ extern "C" {
 }
 
 #include "SaitekLib.h"
-#include "RawImage.h"
+#include "Import/Source/RawImage.h"
 #include "lua.hpp"
 #include "Device.h"
 #include "Script.h"

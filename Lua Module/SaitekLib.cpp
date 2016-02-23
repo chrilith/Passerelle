@@ -12,9 +12,9 @@ extern "C" {
 
 #include "lua.hpp"
 #include "SaitekLib.h"
-#include "RawImage.h"
+#include "Import/Source/RawImage.h"
+#include "Import/Source/DirectOutputImpl.h"
 
-#include "DirectOutputImpl.h"
 #include "Device.h"
 #include "Script.h"
 #include "Api.h"

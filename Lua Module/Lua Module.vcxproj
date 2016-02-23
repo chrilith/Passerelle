@@ -188,9 +188,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Libs\Saitek\DirectOutputImpl.cpp" />
-    <ClCompile Include="..\Libs\Saitek\RawImage.cpp" />
-    <ClCompile Include="..\Libs\Saitek\ThreadLock.cpp" />
+    <ClCompile Include="..\Libs\Saitek\Import\Source\DirectOutputImpl.cpp" />
+    <ClCompile Include="..\Libs\Saitek\Import\Source\RawImage.cpp" />
+    <ClCompile Include="..\Libs\Saitek\Import\Source\ThreadLock.cpp" />
     <ClCompile Include="Api.cpp" />
     <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="SaitekLib.cpp" />
@@ -198,11 +198,10 @@
     <ClCompile Include="Script.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Libs\Saitek\DirectOutputImpl.h" />
+    <ClInclude Include="..\Libs\Saitek\Import\Source\DirectOutputImpl.h" />
+    <ClInclude Include="..\Libs\Saitek\Import\Source\RawImage.h" />
+    <ClInclude Include="..\Libs\Saitek\Import\Source\ThreadLock.h" />
     <ClInclude Include="..\Libs\Saitek\Include\DirectOutput.h" />
-    <ClInclude Include="..\Libs\Saitek\Include\DirectOutputHelper.h" />
-    <ClInclude Include="..\Libs\Saitek\RawImage.h" />
-    <ClInclude Include="..\Libs\Saitek\ThreadLock.h" />
     <ClInclude Include="Api.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="resource.h" />

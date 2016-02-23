@@ -3,9 +3,9 @@
 
 #include <Windows.h>
 #include <dinput.h>
-#include "DirectOutputImpl.h"
+#include "Import/Source/DirectOutputImpl.h"
+#include "Import/Source/ThreadLock.h"
 #include "lua.hpp"
-#include "ThreadLock.h"
 
 extern void CALLBACK DO_PageChange(void* hDevice, DWORD dwPage, bool bSetActive, void* pCtxt);
 extern void CALLBACK DO_SoftButtonChange(void* hDevice, DWORD dwButtons, void* pCtxt);
