@@ -1,10 +1,9 @@
 #ifndef SAITEKLIB_H
 #define SAITEKLIB_H
 
-#include <Windows.h>
-
-extern int gDeviceChangeCallbackRef;
-
-int GetAPIError(HRESULT hResult);
+typedef struct _Const {
+	const char *name;
+	int value;
+} Const;
 
 #endif

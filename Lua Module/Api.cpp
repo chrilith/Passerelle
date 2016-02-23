@@ -1,4 +1,5 @@
-#include <Windows.h>
+#include "Common.h"
+
 #include <atlimage.h>
 #include <tchar.h>
 
@@ -6,7 +7,7 @@ extern "C" {
 #include <hidsdi.h>
 #include <SetupAPI.h>
 #include <devpkey.h>
-//#include <dinput.h>
+#include <dinput.h>
 }
 
 #include "SaitekLib.h"
@@ -31,13 +32,23 @@ extern SaitekDevice HID[HID_COUNT];
 extern int charToWideConverter(const char *s, wchar_t **d);
 extern void s_RenderImage(HDC hdc, LPCTSTR tsz);
 
-#define DIRECTINPUT_VERSION 0x0800
-#include <dinput.h>
-
-BOOL CALLBACK myCB2(LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef) {
-	DeviceData dd;
-	DevMan->GetDeviceInfo(lpddi->guidInstance, dd);
-	return DIENUM_CONTINUE;
+static int GetAPIError(HRESULT hResult) {
+	switch (hResult) {
+	case S_OK:
+		return 0;
+	case E_HANDLE:
+		return 1;
+	case E_NOTIMPL:
+		return 2;
+	case E_INVALIDARG:
+		return 3;
+	case E_PAGENOTACTIVE:
+		return 4;
+	case E_OUTOFMEMORY:
+		return 5;
+	default:	// Unknown
+		return -1;
+	}
 }
 
 LUA_FUNC(GetVersion) {

@@ -16,4 +16,6 @@
 #define LUALIB_TABLE	LUALIB_IDENT "Data"
 #define LUALIB_OPEN( )	int __declspec(dllexport) __cdecl _LIB_OPEN (lua_State* L)
 
+#define DIRECTINPUT_VERSION 0x0800
+
 #endif

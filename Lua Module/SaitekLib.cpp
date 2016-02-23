@@ -21,26 +21,6 @@ extern "C" {
 
 // callback ref: http://stackoverflow.com/questions/2688040/how-to-callback-a-lua-function-from-a-c-function
 
-
-int GetAPIError(HRESULT hResult) {
-	switch (hResult) {
-		case S_OK:
-			return 0;
-		case E_HANDLE:
-			return 1;
-		case E_NOTIMPL:
-			return 2;
-		case E_INVALIDARG:
-			return 3;
-		case E_PAGENOTACTIVE:
-			return 4;
-		case E_OUTOFMEMORY:
-			return 5;
-		default:	// Unknown
-			return -1;
-	}
-}
-
 #ifdef DEBUG
 void print(lua_State* L, const char *s) {
 		
@@ -100,11 +80,6 @@ int luaF_Finalizer(lua_State* L) {
 	return 0;
 }
 
-typedef struct _Const {
-	const char *name;
-	int value;
-} Const;
-
 static const Const Errors[] = {
 	{ "ERR_NONE", 0 },
 	{ "ERR_HANDLE", 1 },
@@ -115,7 +90,7 @@ static const Const Errors[] = {
 	{ "ERR_UNKNOWN", -1 },
 	{ NULL, 0 }
 };
-/*
+
 static const Const Buttons[] =  {
 	{ "kRightRotaryCW", 0x00000002 },
 	{ "kRightRotaryCCW", 0x00000004 },
@@ -127,10 +102,8 @@ static const Const Buttons[] =  {
 	{ "kS4Button", 3 },
 	{ "kS5Button", 4 },
 	{ "kS6Button", 5 },
-	{ "ERR_UNKNOWN", -1 },
 	{ NULL, 0 }
 };
-*/
 
 static void luaF_RegisterConst(lua_State* L, const Const *list) {
 	for (int i = 0; list[i].name != NULL; i++) {
@@ -171,7 +144,8 @@ extern "C" LUALIB_OPEN() {
 	luaL_register(L, LUALIB_NAME, API);
 
 	// Set constants
-//	luaF_RegisterConst(L, Errors);
+	luaF_RegisterConst(L, Errors);
+	luaF_RegisterConst(L, Buttons);
 
 	// Create a meta table for the script data to be collected upon script interruption
 	luaL_newmetatable(L, LUALIB_TABLE);
