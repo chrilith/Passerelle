@@ -70,26 +70,26 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);..\Libs\Lua\include;..\Libs\Saitek;D:\Devel\SDK\WinDDK\7600.16385.1\inc\api</IncludePath>
-    <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath);..\Libs\Lua\Win32\include;..\Libs\Saitek</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);..\Libs\Lua\include;..\Libs\Saitek;D:\Devel\SDK\WinDDK\7600.16385.1\inc\api</IncludePath>
-    <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath);..\Libs\Lua\Win64\include;..\Libs\Saitek</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath);..\Libs\Lua\include;..\Libs\Saitek;C:\WinDDK\7600.16385.1\inc\api</IncludePath>
-    <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath);..\Libs\Lua\Win32\include;..\Libs\Saitek</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
     <TargetName>$(SolutionName)</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath);..\Libs\x64\Lua\include;..\Libs\Saitek;C:\WinDDK\7600.16385.1\inc\api</IncludePath>
-    <LibraryPath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath);..\Libs\Lua\Win64\include;..\Libs\Saitek</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x64;$(LibraryPath)</LibraryPath>
     <TargetName>$(SolutionName)</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(Configuration)\$(Platform)\</IntDir>
@@ -109,7 +109,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>../Libs/Lua/lib/lua5.1.lib;D:\Devel\SDK\WinDDK\7600.16385.1\lib\win7\i386\hid.lib;D:\Devel\SDK\WinDDK\7600.16385.1\lib\win7\i386\Setupapi.lib;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86\dinput8.lib;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../Libs/Lua/Win32/lua5.1.lib;hid.lib;Setupapi.lib;$(DXSDK_DIR)Lib\x86\dinput8.lib;$(DXSDK_DIR)Lib\x86\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
@@ -132,7 +132,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>../Libs/Lua/lib/lua5.1.lib;D:\Devel\SDK\WinDDK\7600.16385.1\lib\win7\i386\hid.lib;D:\Devel\SDK\WinDDK\7600.16385.1\lib\win7\i386\Setupapi.lib;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86\dinput8.lib;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../Libs/Lua/Win64/lua5.1.lib;hid.lib;Setupapi.lib;$(DXSDK_DIR)Lib\x64\dinput8.lib;$(DXSDK_DIR)Lib\x64\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
@@ -159,7 +159,7 @@
       </EnableCOMDATFolding>
       <OptimizeReferences>
       </OptimizeReferences>
-      <AdditionalDependencies>../Libs/Lua/lib/lua5.1.lib;hid.lib;SetupAPI.lib;$(DXSDK_DIR)Lib\x86\dinput8.lib;$(DXSDK_DIR)Lib\x86\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../Libs/Lua/Win32/lua5.1.lib;hid.lib;SetupAPI.lib;$(DXSDK_DIR)Lib\x86\dinput8.lib;$(DXSDK_DIR)Lib\x86\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -183,7 +183,7 @@
       </EnableCOMDATFolding>
       <OptimizeReferences>
       </OptimizeReferences>
-      <AdditionalDependencies>../Libs/x64/Lua/lib/lua5.1.lib;hid.lib;SetupAPI.lib;$(DXSDK_DIR)Lib\x64\dinput8.lib;$(DXSDK_DIR)Lib\x64\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../Libs/Lua/Win64/lua5.1.lib;hid.lib;SetupAPI.lib;$(DXSDK_DIR)Lib\x64\dinput8.lib;$(DXSDK_DIR)Lib\x64\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
