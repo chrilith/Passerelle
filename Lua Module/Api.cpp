@@ -51,6 +51,20 @@ static int GetAPIError(HRESULT hResult) {
 	}
 }
 
+static void CALLBACK DO_PageChange(void* hDevice, DWORD dwPage, bool bSetActive, void* pCtxt) {
+	int index = DevMan->LookupByHandle(hDevice);
+	if (index == HID_NOTFOUND || !HID[index].isActive)
+		return;
+	LuaMan->CallPageChangeCallbacks(index, dwPage, bSetActive);
+}
+
+static void CALLBACK DO_SoftButtonChange(void* hDevice, DWORD dwButtons, void* pCtxt) {
+	int index = DevMan->LookupByHandle(hDevice);
+	if (index == HID_NOTFOUND || !HID[index].isActive)
+		return;
+	LuaMan->CallSoftButtonCallbacks(index, dwButtons);
+}
+
 LUA_FUNC(GetVersion) {
 	lua_pushstring(L, LIB_VERSION);
 	lua_pushnumber(L, LIB_VERSION_MAJOR);

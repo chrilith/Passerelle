@@ -30,29 +30,6 @@ void print(lua_State* L, const char *s) {
 }
 #endif
 
-void CALLBACK DO_Enumerate(void* hDevice, void* pCtxt) {
-	DevMan->HandleDeviceChange(hDevice, true);
-}
-
-void CALLBACK DO_DeviceChange(void* hDevice, bool bAdded, void* pCtxt) {
-	int index = DevMan->HandleDeviceChange(hDevice, bAdded);
-	LuaMan->CallDeviceChangeCallbacks(index, bAdded);
-}
-
-void CALLBACK DO_PageChange(void* hDevice, DWORD dwPage, bool bSetActive, void* pCtxt) {
-	int index = DevMan->LookupByHandle(hDevice);
-	if (index == HID_NOTFOUND || !HID[index].isActive)
-		return;
-	LuaMan->CallPageChangeCallbacks(index, dwPage, bSetActive);
-}
-
-void CALLBACK DO_SoftButtonChange(void* hDevice, DWORD dwButtons, void* pCtxt) {
-	int index = DevMan->LookupByHandle(hDevice);
-	if (index == HID_NOTFOUND || !HID[index].isActive)
-		return;
-	LuaMan->CallSoftButtonCallbacks(index, dwButtons);
-}
-
 int charToWideConverter(const char *s, wchar_t **d) {
 	size_t baseSize = strlen(s) + 1;
 	size_t convertedChars = 0;

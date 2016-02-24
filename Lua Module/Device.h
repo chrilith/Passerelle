@@ -7,11 +7,6 @@
 #include "Import/Source/ThreadLock.h"
 #include "lua.hpp"
 
-extern void CALLBACK DO_PageChange(void* hDevice, DWORD dwPage, bool bSetActive, void* pCtxt);
-extern void CALLBACK DO_SoftButtonChange(void* hDevice, DWORD dwButtons, void* pCtxt);
-extern void CALLBACK DO_Enumerate(void* hDevice, void* pCtxt);
-extern void CALLBACK DO_DeviceChange(void* hDevice, bool bAdded, void* pCtxt);
-
 #define HID_COUNT		10
 #define HID_EMPTY		0
 #define HID_NOTFOUND	-1

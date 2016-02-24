@@ -15,6 +15,8 @@ extern "C" {
 #include "Import/Source/DirectOutputImpl.h"
 #include "SaitekLib.h"
 #include "Device.h"
+#include "Script.h"
+
 
 #define HID_SFIP		'SFIP'
 #define HID_X52P		'X52P'
@@ -76,6 +78,15 @@ int HIDLookupByIndex(int index) {
 	}
 
 	return HID_NOTFOUND;
+}
+
+static void CALLBACK DO_Enumerate(void* hDevice, void* pCtxt) {
+	DevMan->HandleDeviceChange(hDevice, true);
+}
+
+static void CALLBACK DO_DeviceChange(void* hDevice, bool bAdded, void* pCtxt) {
+	int index = DevMan->HandleDeviceChange(hDevice, bAdded);
+	LuaMan->CallDeviceChangeCallbacks(index, bAdded);
 }
 
 void DeviceManager::Initialize() {
