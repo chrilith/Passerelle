@@ -80,37 +80,37 @@ int luaF_Finalizer(lua_State* L) {
 	return 0;
 }
 
-static const Const Constants[] = {
-	// Errors
-	{ "ERR_NONE", 0 },
-	{ "ERR_HANDLE", 1 },
-	{ "ERR_NOTIMPL", 2 },
-	{ "ERR_INVALIGARG", 3 },
-	{ "ERR_PAGENOTACTIVE", 4 },
-	{ "ERR_OUTOFMEMORY", 5 },
-	{ "ERR_UNKNOWN", -1 },
+static void luaF_RegisterConst(lua_State* L) {
+	const Const list[] = {
+		// Errors
+		{ "ERR_NONE", 0 },
+		{ "ERR_HANDLE", 1 },
+		{ "ERR_NOTIMPL", 2 },
+		{ "ERR_INVALIGARG", 3 },
+		{ "ERR_PAGENOTACTIVE", 4 },
+		{ "ERR_OUTOFMEMORY", 5 },
+		{ "ERR_UNKNOWN", -1 },
 
-	// X52 Pro
-	{ "BIT_SCROLLWHEEL_CLICK", SoftButton_Select },
-	{ "BIT_SCROLLWHEEL_UP", SoftButton_Up },
-	{ "BIT_SCROLLWHEEL_DOWN", SoftButton_Down },
+		// X52 Pro
+		{ "BIT_SCROLLWHEEL_CLICK", SoftButton_Select },
+		{ "BIT_SCROLLWHEEL_UP", SoftButton_Up },
+		{ "BIT_SCROLLWHEEL_DOWN", SoftButton_Down },
 
-	// FIP
-	{ "BIT_RIGHTROTARY_CW", SoftButton_Up },
-	{ "BIT_RIGHTROTARY_CCW", SoftButton_Down },
-	{ "BIT_LEFTROTARY_CW", SoftButton_Right },
-	{ "BIT_LEFTROTARY_CCW", SoftButton_Left },
-	{ "BIT_S1BUTTON", SoftButton_1 },
-	{ "BIT_S2BUTTON", SoftButton_2 },
-	{ "BIT_S3BUTTON", SoftButton_3 },
-	{ "BIT_S4BUTTON", SoftButton_4 },
-	{ "BIT_S5BUTTON", SoftButton_5 },
-	{ "BIT_S6BUTTON", SoftButton_6 },
+		// FIP
+		{ "BIT_RIGHTROTARY_CW", SoftButton_Up },
+		{ "BIT_RIGHTROTARY_CCW", SoftButton_Down },
+		{ "BIT_LEFTROTARY_CW", SoftButton_Right },
+		{ "BIT_LEFTROTARY_CCW", SoftButton_Left },
+		{ "BIT_S1BUTTON", SoftButton_1 },
+		{ "BIT_S2BUTTON", SoftButton_2 },
+		{ "BIT_S3BUTTON", SoftButton_3 },
+		{ "BIT_S4BUTTON", SoftButton_4 },
+		{ "BIT_S5BUTTON", SoftButton_5 },
+		{ "BIT_S6BUTTON", SoftButton_6 },
 
-	{ NULL, 0 }
-};
+		{ NULL, 0 }
+	};
 
-static void luaF_RegisterConst(lua_State* L, const Const *list) {
 	for (int i = 0; list[i].name != NULL; i++) {
 		lua_pushinteger(L, list[i].value);
 		lua_setfield(L, 1, list[i].name);
@@ -149,7 +149,7 @@ extern "C" LUALIB_OPEN() {
 	luaL_register(L, LUALIB_NAME, API);
 
 	// Set constants
-	luaF_RegisterConst(L, Constants);
+	luaF_RegisterConst(L);
 
 	// Create a meta table for the script data to be collected upon script interruption
 	luaL_newmetatable(L, LUALIB_TABLE);
