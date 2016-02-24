@@ -80,7 +80,8 @@ int luaF_Finalizer(lua_State* L) {
 	return 0;
 }
 
-static const Const Errors[] = {
+static const Const Constants[] = {
+	// Errors
 	{ "ERR_NONE", 0 },
 	{ "ERR_HANDLE", 1 },
 	{ "ERR_NOTIMPL", 2 },
@@ -88,25 +89,24 @@ static const Const Errors[] = {
 	{ "ERR_PAGENOTACTIVE", 4 },
 	{ "ERR_OUTOFMEMORY", 5 },
 	{ "ERR_UNKNOWN", -1 },
-	{ NULL, 0 }
-};
 
-static const Const Buttons[] =  {
 	// X52 Pro
-	{ "kBitScrollWheelClick", SoftButton_Select },
-	{ "kBitScrollWheelUp", SoftButton_Up },
-	{ "kBitScrollWheelDown", SoftButton_Down },
+	{ "BIT_SCROLLWHEEL_CLICK", SoftButton_Select },
+	{ "BIT_SCROLLWHEEL_UP", SoftButton_Up },
+	{ "BIT_SCROLLWHEEL_DOWN", SoftButton_Down },
+
 	// FIP
-	{ "kBitRightRotaryCW", SoftButton_Up },
-	{ "kBitRightRotaryCCW", SoftButton_Down },
-	{ "kBitLeftRotaryCW", SoftButton_Right },
-	{ "kBitLeftRotaryCCW", SoftButton_Left },
-	{ "kBitS1Button", SoftButton_1 },
-	{ "kBitS2Button", SoftButton_2 },
-	{ "kBitS3Button", SoftButton_3 },
-	{ "kBitS4Button", SoftButton_4 },
-	{ "kBitS5Button", SoftButton_5 },
-	{ "kBitS6Button", SoftButton_6 },
+	{ "BIT_RIGHTROTARY_CW", SoftButton_Up },
+	{ "BIT_RIGHTROTARY_CCW", SoftButton_Down },
+	{ "BIT_LEFTROTARY_CW", SoftButton_Right },
+	{ "BIT_LEFTROTARY_CCW", SoftButton_Left },
+	{ "BIT_S1BUTTON", SoftButton_1 },
+	{ "BIT_S2BUTTON", SoftButton_2 },
+	{ "BIT_S3BUTTON", SoftButton_3 },
+	{ "BIT_S4BUTTON", SoftButton_4 },
+	{ "BIT_S5BUTTON", SoftButton_5 },
+	{ "BIT_S6BUTTON", SoftButton_6 },
+
 	{ NULL, 0 }
 };
 
@@ -149,8 +149,7 @@ extern "C" LUALIB_OPEN() {
 	luaL_register(L, LUALIB_NAME, API);
 
 	// Set constants
-	luaF_RegisterConst(L, Errors);
-	luaF_RegisterConst(L, Buttons);
+	luaF_RegisterConst(L, Constants);
 
 	// Create a meta table for the script data to be collected upon script interruption
 	luaL_newmetatable(L, LUALIB_TABLE);
