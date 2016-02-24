@@ -92,16 +92,21 @@ static const Const Errors[] = {
 };
 
 static const Const Buttons[] =  {
-	{ "kRightRotaryCW", 0x00000002 },
-	{ "kRightRotaryCCW", 0x00000004 },
-	{ "kLeftRotaryCW", 0x00000008 },
-	{ "kLeftRotaryCCW", 0x00000010 },
-	{ "kS1Button", 0 },
-	{ "kS2Button", 1 },
-	{ "kS3Button", 2 },
-	{ "kS4Button", 3 },
-	{ "kS5Button", 4 },
-	{ "kS6Button", 5 },
+	// X52 Pro
+	{ "kBitScrollWheelClick", SoftButton_Select },
+	{ "kBitScrollWheelUp", SoftButton_Up },
+	{ "kBitScrollWheelDown", SoftButton_Down },
+	// FIP
+	{ "kBitRightRotaryCW", SoftButton_Up },
+	{ "kBitRightRotaryCCW", SoftButton_Down },
+	{ "kBitLeftRotaryCW", SoftButton_Right },
+	{ "kBitLeftRotaryCCW", SoftButton_Left },
+	{ "kBitS1Button", SoftButton_1 },
+	{ "kBitS2Button", SoftButton_2 },
+	{ "kBitS3Button", SoftButton_3 },
+	{ "kBitS4Button", SoftButton_4 },
+	{ "kBitS5Button", SoftButton_5 },
+	{ "kBitS6Button", SoftButton_6 },
 	{ NULL, 0 }
 };
 
