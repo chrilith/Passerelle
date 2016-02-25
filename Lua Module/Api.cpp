@@ -10,7 +10,6 @@ extern "C" {
 #include <dinput.h>
 }
 
-#include "SaitekLib.h"
 #include "Import/Source/RawImage.h"
 #include "lua.hpp"
 #include "Device.h"

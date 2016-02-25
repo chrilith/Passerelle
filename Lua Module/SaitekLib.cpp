@@ -11,7 +11,6 @@ extern "C" {
 }
 
 #include "lua.hpp"
-#include "SaitekLib.h"
 #include "Import/Source/RawImage.h"
 #include "Import/Source/DirectOutputImpl.h"
 
@@ -58,7 +57,11 @@ int luaF_Finalizer(lua_State* L) {
 }
 
 static void luaF_RegisterConst(lua_State* L) {
-	const Const list[] = {
+	const struct {
+		const char *name;
+		int value;
+
+	} list[] = {
 		// Errors
 		{ "ERR_NONE", 0 },
 		{ "ERR_HANDLE", 1 },

@@ -13,7 +13,6 @@ extern "C" {
 }
 
 #include "Import/Source/DirectOutputImpl.h"
-#include "SaitekLib.h"
 #include "Device.h"
 #include "Script.h"
 

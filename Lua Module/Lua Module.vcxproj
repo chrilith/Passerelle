@@ -209,7 +209,6 @@
     <ClInclude Include="Api.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="SaitekLib.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="Script.h" />
   </ItemGroup>
