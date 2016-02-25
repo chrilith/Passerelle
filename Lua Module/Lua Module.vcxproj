@@ -200,7 +200,7 @@
     <ClCompile Include="Api.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EntryPoint.cpp" />
-    <ClCompile Include="SaitekLib.cpp" />
+    <ClCompile Include="Module.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Utils.cpp" />
