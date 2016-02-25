@@ -203,6 +203,7 @@
     <ClCompile Include="SaitekLib.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Script.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Libs\Saitek\Import\Source\DirectOutputImpl.h" />
@@ -215,6 +216,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="Script.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Metadata.rc" />

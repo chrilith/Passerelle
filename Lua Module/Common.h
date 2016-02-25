@@ -4,6 +4,10 @@
 #include <Windows.h>
 #include "Debug.h"
 
+#define SCREEN_WIDTH	320
+#define SCREEN_HEIGHT	240
+#define SCREEN_BUFSIZE	(SCREEN_WIDTH * SCREEN_HEIGHT * 3)
+
 #if LEGACY_MODE == 1
 #	define _LIB_NAME	"saitek"
 #	define _LIB_OPEN	luaopen_saitek

@@ -2,6 +2,7 @@
 #include "Script.h"
 #include "resource.h"
 #include "Api.h"
+#include "Utils.h"
 
 #include "Import/Source/RawImage.h"
 #include "lua.hpp"
@@ -10,9 +11,6 @@
 
 extern int HIDCount;
 extern SaitekDevice HID[HID_COUNT];
-
-extern int charToWideConverter(const char *s, wchar_t **d);
-extern void s_RenderImage(HDC hdc, LPCTSTR tsz);
 
 static int GetAPIError(HRESULT hResult) {
 	switch (hResult) {
@@ -446,7 +444,7 @@ LUA_FUNC(SetImageFromFile) {
 		return 0;
 
 	wchar_t *fileNameWideP;
-	int len = charToWideConverter(nameP, &fileNameWideP);// TODO: pas de malloc, [MAXPATHLEN]
+	int len = Utils::CharToWideConverter(nameP, &fileNameWideP);
 
 	HRESULT h;
 	if (!shouldStrech) {
@@ -454,9 +452,9 @@ LUA_FUNC(SetImageFromFile) {
 	} else {
 		CRawImage img;
 		HDC hdc = img.BeginPaint();
-		s_RenderImage(hdc, fileNameWideP);
+		Utils::RenderStretchedImage(hdc, fileNameWideP);
 		img.EndPaint();
-		h = DevMan->DO()->SetImage(HID[devIdx].hDevice, pageID, imgIdx, 320*240*3, img.Buffer());
+		h = DevMan->DO()->SetImage(HID[devIdx].hDevice, pageID, imgIdx, SCREEN_BUFSIZE, img.Buffer());
 	}
 	free(fileNameWideP);
 	lua_pushnumber(L, GetAPIError(h));
@@ -490,13 +488,13 @@ LUA_FUNC(SetImage) {
 		return 0;
 
 	// GD only
-	char img[320*240*3];
+	char img[SCREEN_BUFSIZE];
 	dataP += GD_HEADER_SIZE;
 
-	for (int y = 0; y < 240; y++) {
-		for (int x = 0; x < 320; x++) {
-			int a = (x + y * 320) * 3;
-			int b = (x + ((240 - 1) - y) * 320) * 4;
+	for (int y = 0; y < SCREEN_HEIGHT; y++) {
+		for (int x = 0; x < SCREEN_WIDTH; x++) {
+			int a = (x + y * SCREEN_WIDTH) * 3;
+			int b = (x + ((SCREEN_HEIGHT - 1) - y) * SCREEN_WIDTH) * 4;
 
 			*(img + a + 0) = *(dataP + b + 2);
 			*(img + a + 1) = *(dataP + b + 1);
@@ -535,7 +533,7 @@ LUA_FUNC(SetString) {
 		return 0;
 
 	wchar_t *textWideP;
-	int len = charToWideConverter(dataP, &textWideP);// TODO: pas de malloc, [MAXFILENAME]
+	int len = Utils::CharToWideConverter(dataP, &textWideP);
 
 	HRESULT h = DevMan->DO()->SetString(HID[devIdx].hDevice, pageID, strIdx, len, textWideP);
 	free(textWideP);
@@ -568,7 +566,7 @@ LUA_FUNC(SetProfile) {
 		h = DevMan->DO()->SetProfile(HID[devIdx].hDevice, 0, NULL);
 	} else {
 		wchar_t *fileNameWideP;
-		int len = charToWideConverter(nameP, &fileNameWideP);// TODO: pas de malloc, [MAXPATHLEN]
+		int len = Utils::CharToWideConverter(nameP, &fileNameWideP);
 		h = DevMan->DO()->SetProfile(HID[devIdx].hDevice, len, fileNameWideP);
 		free(fileNameWideP);
 	}

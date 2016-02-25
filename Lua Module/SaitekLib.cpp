@@ -3,38 +3,6 @@
 #include "Script.h"
 #include "Api.h"
 
-// TODO: move this in Utils
-
-#include <atlimage.h>
-#include <tchar.h>
-
-int charToWideConverter(const char *s, wchar_t **d) {
-	size_t baseSize = strlen(s) + 1;
-	size_t convertedChars = 0;
-	*d = (wchar_t *)malloc(baseSize * 2);
-	mbstowcs_s(&convertedChars, *d, baseSize, s, _TRUNCATE);
-
-	return convertedChars;
-}
-
-void s_RenderImage(HDC hdc, LPCTSTR tsz) {
-	CImage image;
-	HRESULT hr = image.Load(tsz);
-	if (SUCCEEDED(hr)) {
-		int old = SetStretchBltMode(hdc, COLORONCOLOR);
-		image.StretchBlt(hdc, 0, 0, 320, 240, SRCCOPY);
-		SetStretchBltMode(hdc, old);
-	} 
-}
-
-// END TODO
-
-int luaF_Finalizer(lua_State* L) {
-	LuaMan->ReleaseSlot(L);
-	DevMan->Release();
-	return 0;
-}
-
 static void luaF_RegisterConst(lua_State* L) {
 	const struct {
 		const char *name;
@@ -76,6 +44,12 @@ static void luaF_RegisterConst(lua_State* L) {
 	}
 	lua_pushvalue(L, 1);
 	lua_replace(L, LUA_ENVIRONINDEX);
+}
+
+int luaF_Finalizer(lua_State* L) {
+	LuaMan->ReleaseSlot(L);
+	DevMan->Release();
+	return 0;
 }
 
 extern "C" LUALIB_OPEN() {
