@@ -5,7 +5,7 @@
 ScriptManager *LuaMan = ScriptManager::GetInstance();
 
 ScriptInfo Script[SCRIPT_COUNT];
-int ScriptCount = HID_EMPTY;	// TODO: changer le nom de la const
+int ScriptCount = HID_EMPTY;
 
 ScriptManager::ScriptManager() {
 	_scriptCount = HID_EMPTY;
@@ -25,11 +25,11 @@ int ScriptManager::ReleaseSlot(lua_State *L) {
 	_lock.Acquire();
 
 	ScriptInfo *nfo = (*(ScriptInfo **)lua_touserdata(L, 1));
-	lua_unref(L, nfo->luaRef);	// Utile puisque le script est fini ?
+	lua_unref(L, nfo->luaRef);
 	nfo->luaState = NULL;
 
 	_scriptCount--;
-	DebugC(L"Dev: %d", _scriptCount);
+	DebugC(L"Dec: %d", _scriptCount);
 
 	_lock.Release();
 	return 0;
