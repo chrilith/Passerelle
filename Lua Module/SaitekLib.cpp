@@ -1,20 +1,5 @@
 #include "Common.h"
-
-#include <atlimage.h>
-#include <tchar.h>
-
-extern "C" {
-#include <hidsdi.h>
-#include <SetupAPI.h>
-#include <devpkey.h>
-#include <dinput.h>
-}
-
 #include "lua.hpp"
-#include "Import/Source/RawImage.h"
-#include "Import/Source/DirectOutputImpl.h"
-
-#include "Device.h"
 #include "Script.h"
 #include "Api.h"
 
@@ -28,6 +13,11 @@ void print(lua_State* L, const char *s) {
 	lua_call(L, 1, 0);
 }
 #endif
+
+// TODO: move this in Utils
+
+#include <atlimage.h>
+#include <tchar.h>
 
 int charToWideConverter(const char *s, wchar_t **d) {
 	size_t baseSize = strlen(s) + 1;
@@ -47,8 +37,6 @@ void s_RenderImage(HDC hdc, LPCTSTR tsz) {
 		SetStretchBltMode(hdc, old);
 	} 
 }
-
-#include <direct.h>
 
 int luaF_Finalizer(lua_State* L) {
 	LuaMan->ReleaseSlot(L);

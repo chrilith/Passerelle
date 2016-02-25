@@ -1,21 +1,9 @@
 #include "Common.h"
-
-#include <string.h>
-#include <stdio.h>
-#include <dinput.h>
-#include <atlimage.h>
-
-extern "C" {
-#include <hidsdi.h>
-#include <SetupAPI.h>
-#include <devpkey.h>
-#include <dinput.h>
-}
-
-#include "Import/Source/DirectOutputImpl.h"
-#include "Device.h"
 #include "Script.h"
 
+#include <atlimage.h>
+#include <hidsdi.h>
+#include <SetupAPI.h>
 
 #define HID_SFIP		'SFIP'
 #define HID_X52P		'X52P'

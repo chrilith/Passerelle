@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include "Script.h"
+#include "lua.hpp"
 
 ScriptManager *LuaMan = ScriptManager::GetInstance();
 

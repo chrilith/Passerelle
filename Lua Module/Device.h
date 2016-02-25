@@ -5,18 +5,11 @@
 #include <dinput.h>
 #include "Import/Source/DirectOutputImpl.h"
 #include "Import/Source/ThreadLock.h"
-#include "lua.hpp"
 
 #define HID_COUNT		10
 #define HID_EMPTY		0
 #define HID_NOTFOUND	-1
 #define LUA_COUNT		10
-
-class ScriptManager;
-class DeviceManager;
-
-extern DeviceManager *DevMan;
-extern ScriptManager *LuaMan;
 
 typedef struct _SaitekDevice {
 	void *hDevice;
@@ -37,7 +30,6 @@ int ToDeviceShortName(const char *type);
 int GetDeviceShortName(GUID type);
 const char *GetDeviceStringName(GUID type);
 
-int HIDLookupByGUID(void* hDevice, bool shouldAdd);
 int HIDLookupByType(const char *type, int index);
 int HIDLookupByIndex(int index);
 
@@ -92,5 +84,7 @@ public:
 	void Initialize();
 	void Release();
 };
+
+extern DeviceManager *DevMan;
 
 #endif

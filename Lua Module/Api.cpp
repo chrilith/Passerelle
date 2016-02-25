@@ -1,21 +1,10 @@
 #include "Common.h"
-
-#include <atlimage.h>
-#include <tchar.h>
-
-extern "C" {
-#include <hidsdi.h>
-#include <SetupAPI.h>
-#include <devpkey.h>
-#include <dinput.h>
-}
-
-#include "Import/Source/RawImage.h"
-#include "lua.hpp"
-#include "Device.h"
 #include "Script.h"
 #include "resource.h"
 #include "Api.h"
+
+#include "Import/Source/RawImage.h"
+#include "lua.hpp"
 
 #ifdef DEBUG
 extern void print(lua_State* L, const char *s);

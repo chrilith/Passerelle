@@ -4,6 +4,8 @@
 #include "Device.h"
 #include "Import/Source/ThreadLock.h"
 
+struct lua_State;
+
 typedef struct _CallbackList {
 	int pageButtonCallbackRef;
 	int softButtonCallbackRef;
@@ -58,5 +60,6 @@ public:
 	void CallDeviceChangeCallbacks(int index, bool bAdded);
 };
 
+extern ScriptManager *LuaMan;
 
 #endif
