@@ -179,15 +179,16 @@ void DeviceManager::GetDeviceInfo(const GUID &iid, DeviceData &dd) {
 			continue;
 		if (!SetupDiGetDeviceInstanceId(hdi, &DeviceInfoData, s, sizeof(s), 0))
 			continue;
-		if(!wcsstr(h.wszPath, _wcslwr(s)))
+		_wcslwr_s(s);
+		if(!wcsstr(h.wszPath, s))
 			continue;
-		strncpy(dd.instanceID, CT2A(s), sizeof(dd.instanceID) - 1);
+		strncpy_s(dd.instanceID, CT2A(s), sizeof(dd.instanceID) - 1);
 
 		HANDLE h = CreateFile(ciddd.DevicePath, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, NULL, NULL);
 		if (HidD_GetProductString(h, s, sizeof(s)))
-			strncpy(dd.name, CT2A(s), sizeof(dd.name) - 1);
+			strncpy_s(dd.name, CT2A(s), sizeof(dd.name) - 1);
 		if (HidD_GetSerialNumberString(h, s, sizeof(s)))
-			strncpy(dd.serialNumber, CT2A(s), sizeof(dd.serialNumber) - 1);
+			strncpy_s(dd.serialNumber, CT2A(s), sizeof(dd.serialNumber) - 1);
 		CloseHandle(h);
 	}
 
