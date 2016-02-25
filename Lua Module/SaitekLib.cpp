@@ -3,19 +3,6 @@
 #include "Script.h"
 #include "Api.h"
 
-// TODO: move this in Debug
-
-#ifdef DEBUG
-void print(lua_State* L, const char *s) {
-		
-	lua_getfield(L, LUA_GLOBALSINDEX, "print");
-	lua_pushstring(L, s);
-	lua_call(L, 1, 0);
-}
-#endif
-
-// END TODO
-
 // TODO: move this in Utils
 
 #include <atlimage.h>

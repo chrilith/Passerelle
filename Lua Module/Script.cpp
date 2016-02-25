@@ -27,13 +27,10 @@ int ScriptManager::ReleaseSlot(lua_State *L) {
 	ScriptInfo *nfo = (*(ScriptInfo **)lua_touserdata(L, 1));
 	lua_unref(L, nfo->luaRef);	// Utile puisque le script est fini ?
 	nfo->luaState = NULL;
-	_scriptCount--;
 
-#ifdef DEBUG
-	WCHAR buf[20];
-	swprintf(buf, L"Dec: %d", _scriptCount);
-	OutputDebugString(buf);
-#endif
+	_scriptCount--;
+	DebugC(L"Dev: %d", _scriptCount);
+
 	_lock.Release();
 	return 0;
 }
@@ -142,11 +139,8 @@ ScriptInfo *ScriptManager::GetFreeSlot(lua_State *L, int ref) {
 	_luaScript[slot].luaState = L;
 
 	_scriptCount++;
-#ifdef DEBUG
-	WCHAR buf[20];
-	swprintf(buf, L"Inc: %d", _scriptCount);
-	OutputDebugString(buf);
-#endif
+
+	DebugC(L"Inc: %d", _scriptCount);
 	_lock.Release();
 
 	return &_luaScript[slot];

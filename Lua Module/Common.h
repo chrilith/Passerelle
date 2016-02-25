@@ -2,6 +2,7 @@
 #define COMMON_H
 
 #include <Windows.h>
+#include "Debug.h"
 
 #if LEGACY_MODE == 1
 #	define _LIB_NAME	"saitek"

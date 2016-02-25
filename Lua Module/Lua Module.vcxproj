@@ -74,6 +74,7 @@
     <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(Configuration)\$(Platform)\</IntDir>
+    <TargetName>$(SolutionName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -81,6 +82,7 @@
     <LibraryPath>$(DXSDK_DIR)Lib\x64;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(Configuration)\$(Platform)\</IntDir>
+    <TargetName>$(SolutionName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -196,6 +198,7 @@
     <ClCompile Include="..\Libs\Saitek\Import\Source\RawImage.cpp" />
     <ClCompile Include="..\Libs\Saitek\Import\Source\ThreadLock.cpp" />
     <ClCompile Include="Api.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="SaitekLib.cpp" />
     <ClCompile Include="Device.cpp" />
@@ -208,6 +211,7 @@
     <ClInclude Include="..\Libs\Saitek\Include\DirectOutput.h" />
     <ClInclude Include="Api.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="Script.h" />

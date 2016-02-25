@@ -6,12 +6,6 @@
 #include "Import/Source/RawImage.h"
 #include "lua.hpp"
 
-#ifdef DEBUG
-extern void print(lua_State* L, const char *s);
-#else
-#	define print(a, b)
-#endif
-
 #define GD_HEADER_SIZE 24
 
 extern int HIDCount;
