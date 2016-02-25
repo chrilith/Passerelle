@@ -3,13 +3,13 @@
 
 #include <Windows.h>
 #include <dinput.h>
+
 #include "Import/Source/DirectOutputImpl.h"
 #include "Import/Source/ThreadLock.h"
 
 #define HID_COUNT		10
 #define HID_EMPTY		0
 #define HID_NOTFOUND	-1
-#define LUA_COUNT		10
 
 typedef struct _SaitekDevice {
 	void *hDevice;

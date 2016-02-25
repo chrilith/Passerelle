@@ -3,7 +3,7 @@
 #include "Script.h"
 #include "Api.h"
 
-// callback ref: http://stackoverflow.com/questions/2688040/how-to-callback-a-lua-function-from-a-c-function
+// TODO: move this in Debug
 
 #ifdef DEBUG
 void print(lua_State* L, const char *s) {
@@ -13,6 +13,8 @@ void print(lua_State* L, const char *s) {
 	lua_call(L, 1, 0);
 }
 #endif
+
+// END TODO
 
 // TODO: move this in Utils
 
@@ -37,6 +39,8 @@ void s_RenderImage(HDC hdc, LPCTSTR tsz) {
 		SetStretchBltMode(hdc, old);
 	} 
 }
+
+// END TODO
 
 int luaF_Finalizer(lua_State* L) {
 	LuaMan->ReleaseSlot(L);

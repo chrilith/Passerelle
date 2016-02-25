@@ -62,13 +62,8 @@ LUA_FUNC(GetVersion) {
 	return 5;
 }
 
-LUA_FUNC(Initialize) {
-	return 0;
-}
-
-LUA_FUNC(Release) {
-	return 0;
-}
+LUA_OBSOLETE(Initialize)
+LUA_OBSOLETE(Release)
 
 LUA_FUNC(Listen) {
 	fgetc(stdin);

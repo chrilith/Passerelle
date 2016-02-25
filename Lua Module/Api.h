@@ -2,6 +2,7 @@
 #define API_H
 
 #define LUA_FUNC(x)		int luaX_##x(lua_State* L)
+#define LUA_OBSOLETE(x)	int luaX_##x(lua_State* L) { return 0; }
 #define LUA_START(x)	static const luaL_reg x[] = {
 #define LUA_ENTRY(x)		{ #x, luaX_##x },
 #define LUA_END( )			{ NULL, NULL } \

@@ -1,11 +1,25 @@
-#include <Windows.h>
+#include "Common.h"
 #include "Script.h"
 #include "lua.hpp"
 
 ScriptManager *LuaMan = ScriptManager::GetInstance();
 
-ScriptInfo Script[LUA_COUNT];
+ScriptInfo Script[SCRIPT_COUNT];
 int ScriptCount = HID_EMPTY;	// TODO: changer le nom de la const
+
+ScriptManager::ScriptManager() {
+	_scriptCount = HID_EMPTY;
+	for (int i = 0; i < SCRIPT_COUNT; i++) {
+		_luaScript[i].luaState = NULL;
+	}
+}
+
+int ScriptManager::FindFreeSlot() {
+	for (int i = 0; i < SCRIPT_COUNT; i++)
+		if (_luaScript[i].luaState == NULL)
+			return i;
+	return HID_NOTFOUND;
+}
 
 int ScriptManager::ReleaseSlot(lua_State *L) {
 	_lock.Acquire();
@@ -25,7 +39,7 @@ int ScriptManager::ReleaseSlot(lua_State *L) {
 }
 
 ScriptInfo *ScriptManager::GetSlot(lua_State *L) {
-	for (int i = 0; i < LUA_COUNT; i++) {
+	for (int i = 0; i < SCRIPT_COUNT; i++) {
 		if (_luaScript[i].luaState == L) {				
 			return &_luaScript[i];
 		}
@@ -37,7 +51,7 @@ void ScriptManager::CallPageChangeCallbacks(int index, DWORD dwPage, bool bSetAc
 	int devIdx = HIDLookupByIndex(index);
 	const char *devMod = GetDeviceStringName(HID[index].type);
 
-	for (int i = 0; i < LUA_COUNT; i++) {
+	for (int i = 0; i < SCRIPT_COUNT; i++) {
 		lua_State *L = _luaScript[i].luaState;
 		if (!L) continue;
 		CallbackList *hid = &_luaScript[i].HID[index];
@@ -60,7 +74,7 @@ void ScriptManager::CallSoftButtonCallbacks(int index, DWORD dwButtons) {
 	int devIdx = HIDLookupByIndex(index);
 	const char *devMod = GetDeviceStringName(HID[index].type);
 
-	for (int i = 0; i < LUA_COUNT; i++) {
+	for (int i = 0; i < SCRIPT_COUNT; i++) {
 		lua_State *L = _luaScript[i].luaState;
 		if (!L) continue;
 		CallbackList *hid = &_luaScript[i].HID[index];
@@ -95,7 +109,7 @@ void ScriptManager::CallDeviceChangeCallbacks(int index, bool bAdded) {
 	int devIdx = HIDLookupByIndex(index);
 	const char *devMod = GetDeviceStringName(HID[index].type);
 
-	for (int i = 0; i < LUA_COUNT; i++) {
+	for (int i = 0; i < SCRIPT_COUNT; i++) {
 		lua_State *L = _luaScript[i].luaState;
 		if (!L) continue;
 		ScriptInfo *lua = &_luaScript[i];

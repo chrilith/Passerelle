@@ -4,6 +4,8 @@
 #include "Device.h"
 #include "Import/Source/ThreadLock.h"
 
+#define SCRIPT_COUNT		10
+
 struct lua_State;
 
 typedef struct _CallbackList {
@@ -26,23 +28,11 @@ class ScriptManager {
 
 private:
 	CThreadLock _lock;
-
-	ScriptManager() {
-		_scriptCount = HID_EMPTY;
-		for (int i = 0; i < LUA_COUNT; i++) {
-			_luaScript[i].luaState = NULL;
-		}
-	}
-
-	ScriptInfo _luaScript[LUA_COUNT];
+	ScriptInfo _luaScript[SCRIPT_COUNT];
 	int _scriptCount;
 
-	int FindFreeSlot() {
-		for (int i = 0; i < LUA_COUNT; i++)
-			if (_luaScript[i].luaState == NULL)
-				return i;
-		return HID_NOTFOUND;
-	}
+	ScriptManager();
+	int FindFreeSlot();
 
 public:
 	static ScriptManager *GetInstance() {
