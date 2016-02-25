@@ -4,17 +4,17 @@
 
 namespace Utils {
 
-__inline int CharToWideConverter(const char *s, wchar_t **d) {
+int CharToWideConverter(const char *s, wchar_t **d) {
 	size_t baseSize = strlen(s) + 1;
 	size_t convertedChars = 0;
 
 	*d = (wchar_t *)malloc(baseSize * 2);
-	mbstowcs_s(&convertedChars, *d, baseSize * 2, s, baseSize);
+	mbstowcs_s(&convertedChars, *d, baseSize, s, _TRUNCATE);
 
 	return (int)convertedChars;
 }
 
-__inline void RenderStretchedImage(HDC hdc, LPCTSTR tsz) {
+void RenderStretchedImage(HDC hdc, LPCTSTR tsz) {
 	CImage image;
 	HRESULT hr = image.Load(tsz);
 	if (SUCCEEDED(hr)) {
