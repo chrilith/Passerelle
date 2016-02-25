@@ -18,6 +18,7 @@ typedef struct _SaitekDevice {
 	bool isActive;
 	DWORD oldButtonState;
 
+	// TODO: use DeviceData
 	char name[32];
 	char instanceID[64];
 	char serialNumber[32];

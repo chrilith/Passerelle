@@ -9,6 +9,8 @@
 #define HID_X52P		'X52P'
 #define HID_UNKN		'UNKN'
 
+// CHECKME : Do we still need all this code since we now have a GetSerialNumber() in the DO API?
+
 DeviceManager *DevMan = DeviceManager::GetInstance();
 
 SaitekDevice HID[HID_COUNT];
