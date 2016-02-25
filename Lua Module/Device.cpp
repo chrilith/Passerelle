@@ -162,9 +162,11 @@ void DeviceManager::GetDeviceInfo(const GUID &iid, DeviceData &dd) {
 		return;
 
 	// Change # to \ to match structure of instance ID
-	for (int i = 0; i < wcslen(h.wszPath); i++)
-		if (h.wszPath[i] == L'#')
+	for (size_t i = 0; i < wcslen(h.wszPath); i++) {
+		if (h.wszPath[i] == L'#') {
 			h.wszPath[i] = L'\\';
+		}
+	}
 
 	// Prepare enumeration
 	HidD_GetHidGuid(&HidGuid);
