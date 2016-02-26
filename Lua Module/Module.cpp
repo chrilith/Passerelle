@@ -10,13 +10,13 @@ static void luaF_RegisterConst(lua_State* L) {
 
 	} list[] = {
 		// Errors
-		{ "ERR_NONE", 0 },
-		{ "ERR_HANDLE", 1 },
-		{ "ERR_NOTIMPL", 2 },
-		{ "ERR_INVALIGARG", 3 },
-		{ "ERR_PAGENOTACTIVE", 4 },
-		{ "ERR_OUTOFMEMORY", 5 },
-		{ "ERR_UNKNOWN", -1 },
+		LUA_CONST(ERR_NONE),
+		LUA_CONST(ERR_HANDLE),
+		LUA_CONST(ERR_NOTIMPL),
+		LUA_CONST(ERR_INVALIDARG),
+		LUA_CONST(ERR_PAGENOTACTIVE),
+		LUA_CONST(ERR_OUTOFMEMORY),
+		LUA_CONST(ERR_UNKNOWN),
 
 		// X52 Pro
 		{ "BIT_SCROLLWHEEL_CLICK", SoftButton_Select },

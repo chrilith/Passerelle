@@ -1,6 +1,16 @@
 #ifndef API_H
 #define API_H
 
+#define ERR_NONE			0
+#define ERR_HANDLE			1
+#define ERR_NOTIMPL			2
+#define ERR_INVALIDARG		3
+#define ERR_PAGENOTACTIVE	4
+#define ERR_OUTOFMEMORY		5
+#define ERR_UNKNOWN			-1
+
+#define LUA_CONST(x)	{ #x, x }
+
 #define LUA_FUNC(x)		int luaX_##x(lua_State* L)
 #define LUA_OBSOLETE(x)	int luaX_##x(lua_State* L) { \
 							DebugL(L, "The method '" #x "' is obsolete."); \

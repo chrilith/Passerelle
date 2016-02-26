@@ -15,19 +15,19 @@ extern SaitekDevice HID[HID_COUNT];
 static int GetAPIError(HRESULT hResult) {
 	switch (hResult) {
 	case S_OK:
-		return 0;
+		return ERR_NONE;
 	case E_HANDLE:
-		return 1;
+		return ERR_HANDLE;
 	case E_NOTIMPL:
-		return 2;
+		return ERR_NOTIMPL;
 	case E_INVALIDARG:
-		return 3;
+		return ERR_INVALIDARG;
 	case E_PAGENOTACTIVE:
-		return 4;
+		return ERR_PAGENOTACTIVE;
 	case E_OUTOFMEMORY:
-		return 5;
+		return ERR_OUTOFMEMORY;
 	default:	// Unknown
-		return -1;
+		return ERR_UNKNOWN;
 	}
 }
 
