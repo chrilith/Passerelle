@@ -146,13 +146,10 @@ void DeviceManager::GetDeviceInfo(const GUID &iid, DeviceData &dd) {
 
 	// Try to create a device
 	LPDIRECTINPUTDEVICE8 pDevice;
-
-	_lockDI.Acquire();
 	HRESULT hd = DevMan->DI()->CreateDevice(iid, &pDevice, NULL);
-	_lockDI.Release();
-	if (FAILED(hd))
+	if (FAILED(hd)) {
 		return;
-
+	}
 	// Get the GUID and Path
 	DIPROPGUIDANDPATH h;
 	h.diph.dwSize = sizeof(DIPROPGUIDANDPATH);
@@ -230,6 +227,7 @@ void DeviceManager::Set(int index) {
 int DeviceManager::HandleDeviceChange(void *hDevice, bool bAdded) {
 	int index = LookupByHandle(hDevice);
 
+	_lockHID.Acquire();
 	if (bAdded) {
 		if (index == HID_NOTFOUND)
 			index = LookupByDeviceInfo(hDevice, false);
@@ -244,17 +242,21 @@ int DeviceManager::HandleDeviceChange(void *hDevice, bool bAdded) {
 			Set(index);
 		}
 	}
+	_lockHID.Release();
 
 	return index;
 }
 
 
 int DeviceManager::LookupByHandle(void* hDevice) {
+	_lockHID.Acquire();
 	for (int i = 0; i < HIDCount; i++) {
 		if (hDevice == HID[i].hDevice) {
 			return i;
 		}
 	}
+	_lockHID.Release();
+
 	return HID_NOTFOUND;
 }
 

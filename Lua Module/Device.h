@@ -46,9 +46,8 @@ private:
 	CDirectOutput *_do;
 	LPDIRECTINPUT8 _di;
 
-	CThreadLock _lockDI;
-	CThreadLock _lockDO;
 	CThreadLock _lockInit;
+	CThreadLock _lockHID;
 
 	int _initializedCounter;
 
@@ -66,6 +65,11 @@ private:
 	int Prepare(void* hDevice);
 	void Set(int index);
 
+	void GetDeviceInfo(void* hDevice, DeviceData &dd);
+	void GetDeviceInfo(const GUID &iid, DeviceData &dd);
+
+	LPDIRECTINPUT8 DI() { return _di; }
+
 public:
 	static DeviceManager *GetInstance() {
 		static DeviceManager *instance = new DeviceManager();
@@ -73,12 +77,8 @@ public:
 	}
 
 	CDirectOutput *DO() { return _do; }
-	LPDIRECTINPUT8 DI() { return _di; }
 	bool IsInitialized() { return (_initializedCounter > 0); }
 
-	void GetDeviceInfo(void* hDevice, DeviceData &dd);
-	void GetDeviceInfo(const GUID &iid, DeviceData &dd);
-	
 	int HandleDeviceChange(void* hDevice, bool bAdded);
 	int LookupByHandle(void* hDevice);
 
