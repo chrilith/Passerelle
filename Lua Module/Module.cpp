@@ -4,7 +4,7 @@
 #include "Api.h"
 
 static void luaF_RegisterConst(lua_State* L) {
-	const struct {
+	static const struct {
 		const char *name;
 		int value;
 
@@ -90,16 +90,20 @@ extern "C" LUALIB_OPEN() {
 	lua_pushcfunction(L, luaF_Finalizer);
 	lua_settable(L, -3);
 
-	// Create the associated userdata
-	ScriptInfo **dataP = (ScriptInfo **)lua_newuserdata(L, sizeof(ScriptInfo **));
-	luaL_getmetatable(L, LUALIB_TABLE);
-	lua_setmetatable(L, -2);
+	// Find a slot...
+	ScriptInfo *slotP = LuaMan->GetFreeSlot(L);
+	if (slotP) {
+		// Create the associated userdata
+		ScriptInfo **dataP = (ScriptInfo **)lua_newuserdata(L, sizeof(ScriptInfo **));
+		luaL_getmetatable(L, LUALIB_TABLE);
+		lua_setmetatable(L, -2);
 
-	// Save it so that it is collected only at the end of the execution
-	int luaRef = luaL_ref(L, LUA_REGISTRYINDEX);
+		// Save it so that it is collected only at the end of the execution
+		slotP->luaRef = luaL_ref(L, LUA_REGISTRYINDEX);
 
-	// Saving...
-	*dataP = LuaMan->GetFreeSlot(L, luaRef);
+		// Save the script data
+		*dataP = slotP;
+	}
 
-	return 0;
+	return 1;
 }

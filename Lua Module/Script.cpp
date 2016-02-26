@@ -25,22 +25,29 @@ int ScriptManager::ReleaseSlot(lua_State *L) {
 	_lock.Acquire();
 
 	ScriptInfo *nfo = (*(ScriptInfo **)lua_touserdata(L, 1));
-	lua_unref(L, nfo->luaRef);
-	nfo->luaState = NULL;
+	if (nfo) {
+		lua_unref(L, nfo->luaRef);
+		nfo->luaState = NULL;
 
-	_scriptCount--;
-	DebugC(L"Dec: %d", _scriptCount);
+		_scriptCount--;
+		DebugC(L"Dec: %d", _scriptCount);
+	}
 
 	_lock.Release();
 	return 0;
 }
 
 ScriptInfo *ScriptManager::GetSlot(lua_State *L) {
+	_lock.Acquire();
+
 	for (int i = 0; i < SCRIPT_COUNT; i++) {
 		if (_luaScript[i].luaState == L) {				
+			_lock.Release();
 			return &_luaScript[i];
 		}
 	}
+
+	_lock.Release();
 	return NULL;
 }
 
@@ -120,7 +127,7 @@ void ScriptManager::CallDeviceChangeCallbacks(int index, bool bAdded) {
 	}
 }
 
-ScriptInfo *ScriptManager::GetFreeSlot(lua_State *L, int ref) {
+ScriptInfo *ScriptManager::GetFreeSlot(lua_State *L) {
 	_lock.Acquire();
 	int slot = FindFreeSlot();
 	if (slot == HID_NOTFOUND) {
@@ -135,7 +142,6 @@ ScriptInfo *ScriptManager::GetFreeSlot(lua_State *L, int ref) {
 		_luaScript[slot].HID[i].softButUpCallbackRef = LUA_REFNIL;
 	}
 	_luaScript[slot].deviceChangeCallbackRef = LUA_REFNIL;
-	_luaScript[slot].luaRef = ref;
 	_luaScript[slot].luaState = L;
 
 	_scriptCount++;

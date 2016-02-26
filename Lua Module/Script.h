@@ -40,7 +40,7 @@ public:
 		return instance;
 	}
 
-	ScriptInfo *GetFreeSlot(lua_State *L, int ref);
+	ScriptInfo *GetFreeSlot(lua_State *L);
 	ScriptInfo *GetSlot(lua_State *L);
 	int ReleaseSlot(lua_State *L);
 
