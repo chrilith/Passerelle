@@ -22,23 +22,23 @@
 						};
 
 LUA_FUNC(Initialize);
-LUA_FUNC(Listen);
 LUA_FUNC(Release);
 
-LUA_FUNC(GetVersion);
-LUA_FUNC(GetNumDevices);
+LUA_FUNC(listen);
+LUA_FUNC(getVersion);
+LUA_FUNC(getNumDevices);
 
-LUA_FUNC(AddPage);
-LUA_FUNC(RemovePage);
-LUA_FUNC(RegisterPageCallback);
-LUA_FUNC(RegisterDeviceChangeCallback);
-LUA_FUNC(SetLed);
-LUA_FUNC(RegisterSoftButtonCallback);
-LUA_FUNC(RegisterSoftButtonUpCallback);
-LUA_FUNC(RegisterSoftButtonDownCallback);
-LUA_FUNC(SetImageFromFile);
-LUA_FUNC(SetImage);
-LUA_FUNC(SetString);
-LUA_FUNC(SetProfile);
+LUA_FUNC(addPage);
+LUA_FUNC(removePage);
+LUA_FUNC(registerPageCallback);
+LUA_FUNC(registerDeviceChangeCallback);
+LUA_FUNC(setLed);
+LUA_FUNC(registerSoftButtonCallback);
+LUA_FUNC(registerSoftButtonUpCallback);
+LUA_FUNC(registerSoftButtonDownCallback);
+LUA_FUNC(setImageFromFile);
+LUA_FUNC(setImage);
+LUA_FUNC(setString);
+LUA_FUNC(setProfile);
 
 #endif

@@ -45,7 +45,7 @@ static void CALLBACK DO_SoftButtonChange(void* hDevice, DWORD dwButtons, void* p
 	LuaMan->CallSoftButtonCallbacks(index, dwButtons);
 }
 
-LUA_FUNC(GetVersion) {
+LUA_FUNC(getVersion) {
 	lua_pushstring(L, LIB_VERSION);
 	lua_pushnumber(L, LIB_VERSION_MAJOR);
 	lua_pushnumber(L, LIB_VERSION_MINOR);
@@ -57,12 +57,12 @@ LUA_FUNC(GetVersion) {
 LUA_OBSOLETE(Initialize)
 LUA_OBSOLETE(Release)
 
-LUA_FUNC(Listen) {
+LUA_FUNC(listen) {
 	fgetc(stdin);
 	return 0;
 }
 
-LUA_FUNC(GetNumDevices) {
+LUA_FUNC(getNumDevices) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -94,7 +94,7 @@ LUA_FUNC(GetNumDevices) {
 	return 1;
 }
 
-LUA_FUNC(AddPage) {
+LUA_FUNC(addPage) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -121,7 +121,7 @@ LUA_FUNC(AddPage) {
 	return 1;
 }
 
-LUA_FUNC(RemovePage) {
+LUA_FUNC(removePage) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -146,7 +146,7 @@ LUA_FUNC(RemovePage) {
 	return 1;
 }
 
-LUA_FUNC(RegisterDeviceChangeCallback) {
+LUA_FUNC(registerDeviceChangeCallback) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -179,7 +179,7 @@ LUA_FUNC(RegisterDeviceChangeCallback) {
 	return 1;
 }
 
-LUA_FUNC(RegisterPageCallback) {
+LUA_FUNC(registerPageCallback) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -226,7 +226,7 @@ LUA_FUNC(RegisterPageCallback) {
 	return 1;
 }
 
-LUA_FUNC(RegisterSoftButtonCallback) {
+LUA_FUNC(registerSoftButtonCallback) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -279,7 +279,7 @@ LUA_FUNC(RegisterSoftButtonCallback) {
 	return 1;
 }
 
-LUA_FUNC(RegisterSoftButtonUpCallback) {
+LUA_FUNC(registerSoftButtonUpCallback) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -331,7 +331,7 @@ LUA_FUNC(RegisterSoftButtonUpCallback) {
 	return 1;
 }
 
-LUA_FUNC(RegisterSoftButtonDownCallback) {
+LUA_FUNC(registerSoftButtonDownCallback) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -381,7 +381,7 @@ LUA_FUNC(RegisterSoftButtonDownCallback) {
 	return 1;
 }
 
-LUA_FUNC(SetLed) {
+LUA_FUNC(setLed) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -410,7 +410,7 @@ LUA_FUNC(SetLed) {
 	return 1;
 }
 
-LUA_FUNC(SetImageFromFile) {
+LUA_FUNC(setImageFromFile) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -461,7 +461,7 @@ LUA_FUNC(SetImageFromFile) {
 	return 1;
 }
 
-LUA_FUNC(SetImage) {
+LUA_FUNC(setImage) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -506,7 +506,7 @@ LUA_FUNC(SetImage) {
 	return 1;
 }
 
-LUA_FUNC(SetString) {
+LUA_FUNC(setString) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
@@ -541,7 +541,7 @@ LUA_FUNC(SetString) {
 	return 1;
 }
 
-LUA_FUNC(SetProfile) {
+LUA_FUNC(setProfile) {
 	if (!DevMan->IsInitialized())
 		return 0;
 	int p = lua_gettop(L);
