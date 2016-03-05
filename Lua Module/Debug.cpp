@@ -1,7 +1,10 @@
 #include "Common.h"
 #include "lua.hpp"
+#include <tchar.h>
 
 #ifdef _DEBUG
+
+EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
 void DebugL(lua_State* L, const char *format, ...) {
 	CHAR buf[1024];
@@ -18,7 +21,7 @@ void DebugL(lua_State* L, const char *format, ...) {
 }
 
 void DebugC(wchar_t *format, ...) {
-	WCHAR buf[1024];
+	TCHAR buf[1024];
 
 	va_list vargs;
 	__crt_va_start(vargs, format);
@@ -26,6 +29,25 @@ void DebugC(wchar_t *format, ...) {
 	__crt_va_end(vargs);
 
 	OutputDebugString(buf);
+}
+
+void DebugF(wchar_t *format, ...) {
+	TCHAR buf[1024];
+	TCHAR path[_MAX_PATH];
+
+	va_list vargs;
+	__crt_va_start(vargs, format);
+	vswprintf(buf, sizeof(buf), format, vargs);
+	__crt_va_end(vargs);
+
+	GetModuleFileName((HMODULE)&__ImageBase, path, _countof(path));
+	wcscat_s(path, _T(".log"));
+
+	HANDLE f = CreateFile(path, FILE_APPEND_DATA, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (f != INVALID_HANDLE_VALUE) {
+		WriteFile(f, buf, wcslen(buf) * sizeof(TCHAR), NULL, NULL);
+		CloseHandle(f);
+	}
 }
 
 #endif
