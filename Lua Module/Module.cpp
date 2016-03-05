@@ -3,6 +3,20 @@
 #include "Script.h"
 #include "Api.h"
 
+#if LEGACY_MODE == 1
+
+// Converts lower case first letter function name to upper case for compatibility with old code
+static const char *__legacy = "\
+	if (saitek ~= nil) then \n\
+		passerelle = saitek \n\
+		for key,value in pairs(passerelle) do \n\
+			upper = string.upper(string.sub(key, 1, 1)) .. string.sub(key, 2) \n\
+			saitek[upper] = passerelle[key] \n\
+		end \n\
+	end";
+
+#endif
+
 static void luaF_RegisterConst(lua_State* L) {
 	static const struct {
 		const char *name;
@@ -104,6 +118,10 @@ extern "C" LUALIB_OPEN() {
 		// Save the script data
 		*dataP = slotP;
 	}
+
+#if LEGACY_MODE == 1
+	luaL_dostring(L, __legacy);
+#endif
 
 	return 1;
 }

@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include "Debug.h"
+#include "Config.h"
 
 #define SCREEN_WIDTH	320
 #define SCREEN_HEIGHT	240
