@@ -54,10 +54,10 @@ static void luaF_RegisterConst(lua_State* L) {
 
 	for (int i = 0; list[i].name != NULL; i++) {
 		lua_pushinteger(L, list[i].value);
-		lua_setfield(L, 1, list[i].name);
+		lua_setfield(L, -2, list[i].name);
 	}
-	lua_pushvalue(L, 1);
-	lua_replace(L, LUA_ENVIRONINDEX);
+//	lua_pushvalue(L, 1);
+//	lua_replace(L, LUA_ENVIRONINDEX);
 }
 
 int luaF_Finalizer(lua_State* L) {
