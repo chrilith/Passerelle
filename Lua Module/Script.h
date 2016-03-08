@@ -44,6 +44,8 @@ public:
 	ScriptInfo *GetSlot(lua_State *L);
 	int ReleaseSlot(lua_State *L);
 
+	bool HaveSlot(lua_State *L) { return GetSlot(L) != NULL; }
+
 	void CallSoftButtonCallbacks(int index, DWORD dwButtons);
 	void CallPageChangeCallbacks(int index, DWORD dwPage, bool bSetActive);
 

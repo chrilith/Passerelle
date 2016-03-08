@@ -57,9 +57,6 @@ int luaF_Finalizer(lua_State* L) {
 }
 
 extern "C" LUALIB_OPEN() {
-	// Initialize
-	DevMan->Initialize();
-
 	// Activate
 	LUA_START(API, luaL_reg)
 		LUA_ENTRY(getVersion)
@@ -82,6 +79,13 @@ extern "C" LUALIB_OPEN() {
 		LUA_ENTRY(Release)
 	LUA_END()
 
+	// We already have a slot for this context
+	if (LuaMan->HaveSlot(L)) {
+		return 0;
+	}
+
+	// Initialize
+	DevMan->Initialize();
 	// Register methods
 	luaL_register(L, LUALIB_NAME, API);
 
