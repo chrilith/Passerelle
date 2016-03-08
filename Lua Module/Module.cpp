@@ -84,10 +84,23 @@ extern "C" LUALIB_OPEN() {
 		return 0;
 	}
 
+	// Find a free slot...
+	ScriptInfo *slotP = LuaMan->GetFreeSlot(L);
+	if (!slotP) {
+		// Initialization failed
+		return -1;
+	}
+
 	// Initialize
 	DevMan->Initialize();
+
 	// Register methods
 	luaL_register(L, LUALIB_NAME, API);
+
+#if LEGACY_MODE == 1
+	// Add legacy function declarations
+	luaL_dostring(L, __legacy);
+#endif
 
 	// Set constants
 	luaF_RegisterConst(L);
@@ -98,24 +111,16 @@ extern "C" LUALIB_OPEN() {
 	lua_pushcfunction(L, luaF_Finalizer);
 	lua_settable(L, -3);
 
-	// Find a slot...
-	ScriptInfo *slotP = LuaMan->GetFreeSlot(L);
-	if (slotP) {
-		// Create the associated userdata
-		ScriptInfo **dataP = (ScriptInfo **)lua_newuserdata(L, sizeof(ScriptInfo **));
-		luaL_getmetatable(L, LUALIB_TABLE);
-		lua_setmetatable(L, -2);
+	// Create the associated userdata
+	ScriptInfo **dataP = (ScriptInfo **)lua_newuserdata(L, sizeof(ScriptInfo **));
+	luaL_getmetatable(L, LUALIB_TABLE);
+	lua_setmetatable(L, -2);
 
-		// Save it so that it is collected only at the end of the execution
-		slotP->luaRef = luaL_ref(L, LUA_REGISTRYINDEX);
+	// Save it so that it is collected only at the end of the execution
+	slotP->luaRef = luaL_ref(L, LUA_REGISTRYINDEX);
 
-		// Save the script data
-		*dataP = slotP;
-	}
-
-#if LEGACY_MODE == 1
-	luaL_dostring(L, __legacy);
-#endif
+	// Save the script data
+	*dataP = slotP;
 
 	return 1;
 }
