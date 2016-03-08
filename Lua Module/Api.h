@@ -1,6 +1,7 @@
 #ifndef API_H
 #define API_H
 
+// Errors
 #define ERR_NONE			0
 #define ERR_HANDLE			1
 #define ERR_NOTIMPL			2
@@ -9,14 +10,36 @@
 #define ERR_OUTOFMEMORY		5
 #define ERR_UNKNOWN			-1
 
-#define LUA_CONST(x)	{ #x, x }
+// X52 Pro
+#define BIT_SCROLLWHEEL_CLICK	SoftButton_Select
+#define BIT_SCROLLWHEEL_UP		SoftButton_Up
+#define BIT_SCROLLWHEEL_DOWN	SoftButton_Down
+
+// FIP
+#define BIT_RIGHTROTARY_CW		SoftButton_Up
+#define BIT_RIGHTROTARY_CCW		SoftButton_Down
+#define BIT_LEFTROTARY_CW		SoftButton_Right
+#define BIT_LEFTROTARY_CCW		SoftButton_Left
+#define BIT_S1BUTTON			SoftButton_1
+#define BIT_S2BUTTON			SoftButton_2
+#define BIT_S3BUTTON			SoftButton_3
+#define BIT_S4BUTTON			SoftButton_4
+#define BIT_S5BUTTON			SoftButton_5
+#define BIT_S6BUTTON			SoftButton_6
+
+typedef struct {
+	const char *name;
+	int value;
+} luaI_const;
+
+#define LUA_CONST(x)	{ #x, x },
 
 #define LUA_FUNC(x)		int luaX_##x(lua_State* L)
 #define LUA_OBSOLETE(x)	int luaX_##x(lua_State* L) { \
 							DebugL(L, "The method '" #x "' is obsolete."); \
 							return 0; \
 						}
-#define LUA_START(x)	static const luaL_reg x[] = {
+#define LUA_START(x, T)	static const T x[] = {
 #define LUA_ENTRY(x)		{ #x, luaX_##x },
 #define LUA_END( )			{ NULL, NULL } \
 						};

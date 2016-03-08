@@ -18,46 +18,36 @@ static const char *__legacy = "\
 #endif
 
 static void luaF_RegisterConst(lua_State* L) {
-	static const struct {
-		const char *name;
-		int value;
-
-	} list[] = {
+	LUA_START(list, luaI_const)
 		// Errors
-		LUA_CONST(ERR_NONE),
-		LUA_CONST(ERR_HANDLE),
-		LUA_CONST(ERR_NOTIMPL),
-		LUA_CONST(ERR_INVALIDARG),
-		LUA_CONST(ERR_PAGENOTACTIVE),
-		LUA_CONST(ERR_OUTOFMEMORY),
-		LUA_CONST(ERR_UNKNOWN),
-
+		LUA_CONST(ERR_NONE)
+		LUA_CONST(ERR_HANDLE)
+		LUA_CONST(ERR_NOTIMPL)
+		LUA_CONST(ERR_INVALIDARG)
+		LUA_CONST(ERR_PAGENOTACTIVE)
+		LUA_CONST(ERR_OUTOFMEMORY)
+		LUA_CONST(ERR_UNKNOWN)
 		// X52 Pro
-		{ "BIT_SCROLLWHEEL_CLICK", SoftButton_Select },
-		{ "BIT_SCROLLWHEEL_UP", SoftButton_Up },
-		{ "BIT_SCROLLWHEEL_DOWN", SoftButton_Down },
-
+		LUA_CONST(BIT_SCROLLWHEEL_CLICK)
+		LUA_CONST(BIT_SCROLLWHEEL_UP)
+		LUA_CONST(BIT_SCROLLWHEEL_DOWN)
 		// FIP
-		{ "BIT_RIGHTROTARY_CW", SoftButton_Up },
-		{ "BIT_RIGHTROTARY_CCW", SoftButton_Down },
-		{ "BIT_LEFTROTARY_CW", SoftButton_Right },
-		{ "BIT_LEFTROTARY_CCW", SoftButton_Left },
-		{ "BIT_S1BUTTON", SoftButton_1 },
-		{ "BIT_S2BUTTON", SoftButton_2 },
-		{ "BIT_S3BUTTON", SoftButton_3 },
-		{ "BIT_S4BUTTON", SoftButton_4 },
-		{ "BIT_S5BUTTON", SoftButton_5 },
-		{ "BIT_S6BUTTON", SoftButton_6 },
-
-		{ NULL, 0 }
-	};
+		LUA_CONST(BIT_RIGHTROTARY_CW)
+		LUA_CONST(BIT_RIGHTROTARY_CCW)
+		LUA_CONST(BIT_LEFTROTARY_CW)
+		LUA_CONST(BIT_LEFTROTARY_CCW)
+		LUA_CONST(BIT_S1BUTTON)
+		LUA_CONST(BIT_S2BUTTON)
+		LUA_CONST(BIT_S3BUTTON)
+		LUA_CONST(BIT_S4BUTTON)
+		LUA_CONST(BIT_S5BUTTON)
+		LUA_CONST(BIT_S6BUTTON)
+	LUA_END()
 
 	for (int i = 0; list[i].name != NULL; i++) {
 		lua_pushinteger(L, list[i].value);
 		lua_setfield(L, -2, list[i].name);
 	}
-//	lua_pushvalue(L, 1);
-//	lua_replace(L, LUA_ENVIRONINDEX);
 }
 
 int luaF_Finalizer(lua_State* L) {
@@ -71,7 +61,7 @@ extern "C" LUALIB_OPEN() {
 	DevMan->Initialize();
 
 	// Activate
-	LUA_START(API)
+	LUA_START(API, luaL_reg)
 		LUA_ENTRY(getVersion)
 		LUA_ENTRY(listen)
 		LUA_ENTRY(getNumDevices)
