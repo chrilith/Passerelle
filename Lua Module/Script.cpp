@@ -60,13 +60,15 @@ void ScriptManager::CallPageChangeCallbacks(int index, DWORD dwPage, bool bSetAc
 		if (!L) continue;
 		CallbackList *hid = &_luaScript[i].HID[index];
 
-		lua_rawgeti(L, LUA_REGISTRYINDEX, hid->pageButtonCallbackRef);
-		lua_pushstring(L, devMod);
-		lua_pushnumber(L, devIdx);
-		lua_pushnumber(L, dwPage);
-		lua_pushboolean(L, bSetActive);
+		if (hid->pageButtonCallbackRef != LUA_REFNIL) {
+			lua_rawgeti(L, LUA_REGISTRYINDEX, hid->pageButtonCallbackRef);
+			lua_pushstring(L, devMod);
+			lua_pushnumber(L, devIdx);
+			lua_pushnumber(L, dwPage);
+			lua_pushboolean(L, bSetActive);
 
-		lua_pcall(L, 4, 0, 0); // TODO: error function
+			lua_pcall(L, 4, 0, 0); // TODO: error function
+		}
 	}
 }
 
@@ -118,12 +120,14 @@ void ScriptManager::CallDeviceChangeCallbacks(int index, bool bAdded) {
 		if (!L) continue;
 		ScriptInfo *lua = &_luaScript[i];
 
-		lua_rawgeti(L, LUA_REGISTRYINDEX, lua->deviceChangeCallbackRef);
-		lua_pushstring(L, devMod);
-		lua_pushnumber(L, devIdx);
-		lua_pushboolean(L, bAdded);
+		if (lua->deviceChangeCallbackRef != LUA_REFNIL) {
+			lua_rawgeti(L, LUA_REGISTRYINDEX, lua->deviceChangeCallbackRef);
+			lua_pushstring(L, devMod);
+			lua_pushnumber(L, devIdx);
+			lua_pushboolean(L, bAdded);
 
-		lua_pcall(L, 3, 0, 0); // TODO: error function
+			lua_pcall(L, 3, 0, 0); // TODO: error function
+		}
 	}
 }
 
