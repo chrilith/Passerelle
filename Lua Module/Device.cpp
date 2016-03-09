@@ -92,14 +92,17 @@ void DeviceManager::Initialize() {
 
 	//Initialize DirectInput
 	HRESULT hdi = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID *)&this->_di, NULL);
-	if (!SUCCEEDED(hdi))
+	if (!SUCCEEDED(hdi)) {
+		_lockInit.Release();
 		return;
+	}
 
 	//Initialize Saitek DirectOutput
 	_do = new CDirectOutput();
 	HRESULT hdo = _do->Initialize(L"" LUALIB_IDENT);
 	if (!SUCCEEDED(hdo)) {
 		_di->Release();
+		_lockInit.Release();
 		return;
 	}
 
@@ -250,13 +253,15 @@ int DeviceManager::HandleDeviceChange(void *hDevice, bool bAdded) {
 
 int DeviceManager::LookupByHandle(void* hDevice) {
 	_lockHID.Acquire();
+
 	for (int i = 0; i < HIDCount; i++) {
 		if (hDevice == HID[i].hDevice) {
+			_lockHID.Release();
 			return i;
 		}
 	}
-	_lockHID.Release();
 
+	_lockHID.Release();
 	return HID_NOTFOUND;
 }
 
