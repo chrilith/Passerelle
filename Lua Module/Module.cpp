@@ -1,3 +1,4 @@
+#include "Config.h"
 #include "Common.h"
 #include "lua.hpp"
 #include "Script.h"
@@ -46,7 +47,9 @@ static void luaF_RegisterConst(lua_State* L) {
 		// Callback mode
 		LUA_CONST(CBM_DIRECT)
 		LUA_CONST(CBM_EVENT)
+#ifdef WITH_FSUIPC
 		LUA_CONST(CBM_FSUIPC)
+#endif
 	LUA_END()
 
 	for (int i = 0; list[i].name != NULL; i++) {

@@ -70,7 +70,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);..\Libs\Lua\Win32\include;..\Libs\Saitek</IncludePath>
+    <IncludePath>$(IncludePath);..\Libs\Lua\Win32\include;..\Libs\Saitek;..\Libs\FSUIPC</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(Configuration)\$(Platform)\</IntDir>
@@ -86,7 +86,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath);..\Libs\Lua\Win32\include;..\Libs\Saitek</IncludePath>
+    <IncludePath>$(IncludePath);..\Libs\Lua\Win32\include;..\Libs\Saitek;..\Libs\FSUIPC</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
     <TargetName>$(SolutionName)</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
@@ -115,10 +115,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>../Libs/Lua/Win32/lua5.1.lib;hid.lib;Setupapi.lib;$(DXSDK_DIR)Lib\x86\dinput8.lib;$(DXSDK_DIR)Lib\x86\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../Libs/Lua/Win32/lua5.1.lib;../Libs/FSUIPC/FSUIPC_User.lib;hid.lib;Setupapi.lib;$(DXSDK_DIR)Lib\x86\dinput8.lib;$(DXSDK_DIR)Lib\x86\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>LIBC.lib</IgnoreSpecificDefaultLibraries>
       <GenerateMapFile>false</GenerateMapFile>
       <MapExports>false</MapExports>
     </Link>
@@ -165,8 +164,9 @@
       </EnableCOMDATFolding>
       <OptimizeReferences>
       </OptimizeReferences>
-      <AdditionalDependencies>../Libs/Lua/Win32/lua5.1.lib;hid.lib;SetupAPI.lib;$(DXSDK_DIR)Lib\x86\dinput8.lib;$(DXSDK_DIR)Lib\x86\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../Libs/Lua/Win32/lua5.1.lib;../Libs/FSUIPC/FSUIPC_User.lib;hid.lib;SetupAPI.lib;$(DXSDK_DIR)Lib\x86\dinput8.lib;$(DXSDK_DIR)Lib\x86\dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>LIBC.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -199,6 +199,7 @@
     <ClCompile Include="..\Libs\Saitek\Import\Source\ThreadLock.cpp" />
     <ClCompile Include="Api.cpp" />
     <ClCompile Include="CallbackEvent.cpp" />
+    <ClCompile Include="CallbackFSUIPC.cpp" />
     <ClCompile Include="CallbackHandler.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EntryPoint.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Api.h" />
     <ClInclude Include="ButtonChangeEvent.h" />
     <ClInclude Include="CallbackEvent.h" />
+    <ClInclude Include="CallbackFSUIPC.h" />
     <ClInclude Include="CallbackHandler.h" />
     <ClInclude Include="CallbackLua.h" />
     <ClInclude Include="Common.h" />

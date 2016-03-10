@@ -1,6 +1,8 @@
 #include "CallbackHandler.h"
 #include "CallbackEvent.h"
 #include "CallbackLua.h"
+#include "CallbackFSUIPC.h"
+
 #include "Common.h"
 #include "lua.hpp"
 
@@ -58,6 +60,10 @@ CallbackHandler *CallbackHandler::Factory(int mode) {
 	switch (mode) {
 	case CBM_EVENT:
 		return new CallbackEvent();
+#ifdef WITH_FSUIPC
+	case CBM_FSUIPC:
+		return new CallbackFSUIPC();
+#endif
 	}
 	// Default mode
 	return new CallbackLua();
