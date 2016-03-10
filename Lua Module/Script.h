@@ -7,6 +7,8 @@
 #define SCRIPT_COUNT		10
 
 struct lua_State;
+class CallbackHandler;
+class CallbackLua;
 
 typedef struct _CallbackList {
 	int pageButtonCallbackRef;
@@ -20,6 +22,7 @@ typedef struct _ScriptInfo {
 	int luaRef;
 
 	int deviceChangeCallbackRef;
+	CallbackHandler *events;
 	CallbackList HID[HID_COUNT];
 
 } ScriptInfo;
