@@ -16,6 +16,8 @@ protected:
 	CThreadLock _lock;
 
 public:
+	virtual ~CallbackHandler() { }
+
 	virtual void PushEvent(Event *event) = 0;
 	virtual Event *PopEvent() = 0;
 	void Process(Event *event);
