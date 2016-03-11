@@ -13,12 +13,12 @@ void CallbackFSUIPC::PushEvent(Event *event) {
 		return;
 
 	DWORD dwResult;
-	static short poll = 0;
+	static char poll = 0;
 
 	CallbackEvent::PushEvent(event);
 	poll = (poll++) % 2;
 
-	if (FSUIPC_Write(OFFSET, sizeof(short), &poll, &dwResult)) {
+	if (FSUIPC_Write(OFFSET, sizeof(poll), &poll, &dwResult)) {
 		FSUIPC_Process(&dwResult);
 	}
 }
