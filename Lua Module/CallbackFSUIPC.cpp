@@ -5,7 +5,7 @@
 
 CallbackFSUIPC::CallbackFSUIPC() {
 	DWORD dwResult;
-	_initialized = FSUIPC_Open(SIM_ANY, &dwResult);
+	_initialized = (FSUIPC_Open(SIM_ANY, &dwResult) == 1);
 }
 
 void CallbackFSUIPC::PushEvent(Event *event) {

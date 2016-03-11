@@ -1,7 +1,11 @@
 #pragma once
+#pragma warning(push)
+#pragma warning(disable : 4577)	// noexcept
 
 #include <queue>
 #include "CallbackHandler.h"
+
+#pragma warning(pop)
 
 class CallbackEvent : public CallbackHandler {
 
@@ -19,3 +23,4 @@ public:
 		}
 	}
 };
+
