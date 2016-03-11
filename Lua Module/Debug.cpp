@@ -45,7 +45,7 @@ void DebugF(wchar_t *format, ...) {
 
 	HANDLE f = CreateFile(path, FILE_APPEND_DATA, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (f != INVALID_HANDLE_VALUE) {
-		WriteFile(f, buf, wcslen(buf) * sizeof(TCHAR), NULL, NULL);
+		WriteFile(f, buf, (DWORD)wcslen(buf) * sizeof(TCHAR), NULL, NULL);
 		CloseHandle(f);
 	}
 }
