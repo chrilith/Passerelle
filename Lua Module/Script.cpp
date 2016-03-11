@@ -29,6 +29,7 @@ int ScriptManager::ReleaseSlot(lua_State *L) {
 
 	ScriptInfo *nfo = (*(ScriptInfo **)lua_touserdata(L, 1));
 	if (nfo) {
+		delete nfo->events;
 		lua_unref(L, nfo->luaRef);
 		nfo->luaState = NULL;
 
