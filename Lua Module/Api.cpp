@@ -7,6 +7,8 @@
 #include "Import/Source/RawImage.h"
 #include "lua.hpp"
 
+#include "CallbackHandler.h"
+
 #define GD_HEADER_SIZE 24
 
 extern int HIDCount;
@@ -59,6 +61,54 @@ LUA_OBSOLETE(Release)
 
 LUA_FUNC(listen) {
 	fgetc(stdin);
+	return 0;
+}
+
+LUA_FUNC(sleep) {
+	int p = lua_gettop(L);
+
+	if (!(p == 1 &&
+			lua_isnumber(L, 1))
+		) {
+		return 0;
+	}
+	int delay = (int)lua_tonumber(L, 1);
+
+	Sleep(delay);
+	return 0;
+}
+
+LUA_FUNC(poll) {
+	ScriptInfo *luaScr = LuaMan->GetSlot(L);
+	CallbackHandler *handler = luaScr->events;
+	int processed = 0;
+
+	if (handler)
+	while (Event *e = handler->PopEvent()) {
+		handler->Process(e);
+		processed++;
+	}
+
+	lua_pushnumber(L, processed);
+	return 1;
+}
+
+LUA_FUNC(setMode) {
+	ScriptInfo *luaScr = LuaMan->GetSlot(L);
+	int p = lua_gettop(L);
+
+	if (!(p == 1 &&
+		lua_isnumber(L, 1))
+		) {
+		return 0;
+	}
+	int mode = (int)lua_tonumber(L, 1);
+
+	if (luaScr->events->GetMode() != mode) {
+		delete luaScr->events;
+		luaScr->events = CallbackHandler::Factory(mode);
+	}
+
 	return 0;
 }
 

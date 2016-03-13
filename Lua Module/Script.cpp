@@ -1,6 +1,9 @@
 #include "Common.h"
 #include "Script.h"
+#include "CallbackLua.h"
 #include "lua.hpp"
+
+#include "CallbackEvent.h"
 
 ScriptManager *LuaMan = ScriptManager::GetInstance();
 
@@ -26,6 +29,7 @@ int ScriptManager::ReleaseSlot(lua_State *L) {
 
 	ScriptInfo *nfo = (*(ScriptInfo **)lua_touserdata(L, 1));
 	if (nfo) {
+		delete nfo->events;
 		lua_unref(L, nfo->luaRef);
 		nfo->luaState = NULL;
 
@@ -58,16 +62,19 @@ void ScriptManager::CallPageChangeCallbacks(int index, DWORD dwPage, bool bSetAc
 	for (int i = 0; i < SCRIPT_COUNT; i++) {
 		lua_State *L = _luaScript[i].luaState;
 		if (!L) continue;
+		ScriptInfo *lua = &_luaScript[i];
 		CallbackList *hid = &_luaScript[i].HID[index];
+		CallbackHandler *handler = lua->events;
 
 		if (hid->pageButtonCallbackRef != LUA_REFNIL) {
-			lua_rawgeti(L, LUA_REGISTRYINDEX, hid->pageButtonCallbackRef);
-			lua_pushstring(L, devMod);
-			lua_pushnumber(L, devIdx);
-			lua_pushnumber(L, dwPage);
-			lua_pushboolean(L, bSetActive);
+			PageChangeEvent *e = new PageChangeEvent(EVT_PAGECHANGE, L);
+			e->funcRef = hid->softButtonCallbackRef;
+			e->devMod = devMod;
+			e->devIdx = devIdx;
+			e->dwPage = dwPage;
+			e->bSetActive = bSetActive;
 
-			lua_pcall(L, 4, 0, 0); // TODO: error function
+			handler->PushEvent(e);
 		}
 	}
 }
@@ -83,30 +90,38 @@ void ScriptManager::CallSoftButtonCallbacks(int index, DWORD dwButtons) {
 	for (int i = 0; i < SCRIPT_COUNT; i++) {
 		lua_State *L = _luaScript[i].luaState;
 		if (!L) continue;
+		ScriptInfo *lua = &_luaScript[i];
 		CallbackList *hid = &_luaScript[i].HID[index];
+		CallbackHandler *handler = lua->events;
 
 		if (hid->softButtonCallbackRef != LUA_REFNIL) {
-			lua_rawgeti(L, LUA_REGISTRYINDEX, hid->softButtonCallbackRef);
-			lua_pushstring(L, devMod);
-			lua_pushnumber(L, devIdx);
-			lua_pushnumber(L, dwButtons);
-			lua_pcall(L, 3, 0, 0); // TODO: error function
+			ButtonChangeEvent *e = new ButtonChangeEvent(EVT_BUTTONCHANGE, L);
+			e->funcRef = hid->softButtonCallbackRef;
+			e->devMod = devMod;
+			e->devIdx = devIdx;
+			e->dwButtons = dwButtons;
+
+			handler->PushEvent(e);
 		}
 
 		if (hid->softButDownCallbackRef != LUA_REFNIL && changedDown != 0) {
-			lua_rawgeti(L, LUA_REGISTRYINDEX, hid->softButDownCallbackRef);
-			lua_pushstring(L, devMod);
-			lua_pushnumber(L, devIdx);
-			lua_pushnumber(L, changedDown);
-			lua_pcall(L, 3, 0, 0); // TODO: error function
+			ButtonChangeEvent *e = new ButtonChangeEvent(EVT_BUTTONCHANGE, L);
+			e->funcRef = hid->softButDownCallbackRef;
+			e->devMod = devMod;
+			e->devIdx = devIdx;
+			e->dwButtons = changedDown;
+
+			handler->PushEvent(e);
 		}
 
 		if (hid->softButUpCallbackRef != LUA_REFNIL && changedUp != 0) {
-			lua_rawgeti(L, LUA_REGISTRYINDEX, hid->softButUpCallbackRef);
-			lua_pushstring(L, devMod);
-			lua_pushnumber(L, devIdx);
-			lua_pushnumber(L, changedUp);
-			lua_pcall(L, 3, 0, 0); // TODO: error function
+			ButtonChangeEvent *e = new ButtonChangeEvent(EVT_BUTTONCHANGE, L);
+			e->funcRef = hid->softButUpCallbackRef;
+			e->devMod = devMod;
+			e->devIdx = devIdx;
+			e->dwButtons = changedUp;
+
+			handler->PushEvent(e);
 		}
 	}
 }
@@ -119,14 +134,16 @@ void ScriptManager::CallDeviceChangeCallbacks(int index, bool bAdded) {
 		lua_State *L = _luaScript[i].luaState;
 		if (!L) continue;
 		ScriptInfo *lua = &_luaScript[i];
+		CallbackHandler *handler = lua->events;
 
 		if (lua->deviceChangeCallbackRef != LUA_REFNIL) {
-			lua_rawgeti(L, LUA_REGISTRYINDEX, lua->deviceChangeCallbackRef);
-			lua_pushstring(L, devMod);
-			lua_pushnumber(L, devIdx);
-			lua_pushboolean(L, bAdded);
+			DeviceChangeEvent *e = new DeviceChangeEvent(EVT_DEVICECHANGE, L);
+			e->funcRef = lua->deviceChangeCallbackRef;
+			e->devMod = devMod;
+			e->devIdx = devIdx;
+			e->bAdded = bAdded;
 
-			lua_pcall(L, 3, 0, 0); // TODO: error function
+			handler->PushEvent(e);
 		}
 	}
 }
@@ -147,6 +164,7 @@ ScriptInfo *ScriptManager::GetFreeSlot(lua_State *L) {
 	}
 	_luaScript[slot].deviceChangeCallbackRef = LUA_REFNIL;
 	_luaScript[slot].luaState = L;
+	_luaScript[slot].events = new CallbackLua();
 
 	_scriptCount++;
 

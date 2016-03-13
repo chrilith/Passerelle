@@ -1,7 +1,9 @@
+#include "Config.h"
 #include "Common.h"
 #include "lua.hpp"
 #include "Script.h"
 #include "Api.h"
+#include "CallbackHandler.h"
 #include "resource.h"
 
 #define _NAME		LUALIB_NAME
@@ -47,6 +49,12 @@ static void luaF_RegisterConst(lua_State* L) {
 		LUA_CONST(BIT_S4BUTTON)
 		LUA_CONST(BIT_S5BUTTON)
 		LUA_CONST(BIT_S6BUTTON)
+		// Callback mode
+		LUA_CONST(CBM_DIRECT)
+		LUA_CONST(CBM_EVENT)
+#ifdef WITH_FSUIPC
+		LUA_CONST(CBM_FSUIPC)
+#endif
 	LUA_END()
 
 	for (int i = 0; list[i].name != NULL; i++) {
@@ -92,6 +100,10 @@ extern "C" LUALIB_OPEN() {
 		LUA_ENTRY(registerSoftButtonCallback)
 		LUA_ENTRY(registerSoftButtonUpCallback)
 		LUA_ENTRY(registerSoftButtonDownCallback)
+		// New in v0.7
+		LUA_ENTRY(setMode)
+		LUA_ENTRY(poll)
+		LUA_ENTRY(sleep)
 		// Obsolete
 		LUA_ENTRY(Initialize)
 		LUA_ENTRY(Release)

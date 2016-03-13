@@ -68,5 +68,8 @@ LUA_FUNC(setImageFromFile);
 LUA_FUNC(setImage);
 LUA_FUNC(setString);
 LUA_FUNC(setProfile);
+LUA_FUNC(poll);
+LUA_FUNC(sleep);
+LUA_FUNC(setMode);
 
 #endif
