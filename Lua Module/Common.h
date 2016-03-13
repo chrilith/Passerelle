@@ -9,13 +9,8 @@
 #define SCREEN_HEIGHT	240
 #define SCREEN_BUFSIZE	(SCREEN_WIDTH * SCREEN_HEIGHT * 3)
 
-#if LEGACY_MODE == 1
-#	define _LIB_NAME	"saitek"
-#	define _LIB_OPEN	luaopen_saitek
-#else
-#	define _LIB_NAME	"passerelle"
-#	define _LIB_OPEN	luaopen_passerelle
-#endif
+#define _LIB_NAME	"passerelle"
+#define _LIB_OPEN	luaopen_passerelle
 
 #define LUALIB_NAME		_LIB_NAME
 #define LUALIB_IDENT	LUALIB_NAME "LuaLib"

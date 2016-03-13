@@ -10,20 +10,6 @@
 #define _VERSION	_NAME " " LIB_VERSION
 #define _COPYRIGHT	_VERSION " (c) 2011-2016 Chris Apers"
 
-#if LEGACY_MODE == 1
-
-// Converts lower case first letter function name to upper case for compatibility with old code
-static const char *__legacy = "\
-	if (saitek ~= nil) then \n\
-		passerelle = saitek \n\
-		for key,value in pairs(passerelle) do \n\
-			upper = string.upper(string.sub(key, 1, 1)) .. string.sub(key, 2) \n\
-			saitek[upper] = passerelle[key] \n\
-		end \n\
-	end";
-
-#endif
-
 static void luaF_RegisterConst(lua_State* L) {
 	LUA_START(list, luaI_const)
 		// Errors
@@ -117,6 +103,7 @@ extern "C" LUALIB_OPEN() {
 	// Find a free slot...
 	ScriptInfo *slotP = LuaMan->GetFreeSlot(L);
 	if (!slotP) {
+		TraceL(L, "Failed to initialize '" LUALIB_NAME "'");
 		// Initialization failed
 		return -1;
 	}
@@ -126,11 +113,6 @@ extern "C" LUALIB_OPEN() {
 
 	// Register methods
 	luaL_register(L, LUALIB_NAME, API);
-
-#if LEGACY_MODE == 1
-	// Add legacy function declarations
-	luaL_dostring(L, __legacy);
-#endif
 
 	// Set constants
 	luaF_RegisterConst(L);
