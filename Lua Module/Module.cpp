@@ -2,6 +2,11 @@
 #include "lua.hpp"
 #include "Script.h"
 #include "Api.h"
+#include "resource.h"
+
+#define _NAME		LUALIB_NAME
+#define _VERSION	_NAME " " LIB_VERSION
+#define _COPYRIGHT	_VERSION " (c) 2011-2016 Chris Apers"
 
 #if LEGACY_MODE == 1
 
@@ -46,6 +51,19 @@ static void luaF_RegisterConst(lua_State* L) {
 
 	for (int i = 0; list[i].name != NULL; i++) {
 		lua_pushinteger(L, list[i].value);
+		lua_setfield(L, -2, list[i].name);
+	}
+}
+
+static void luaF_RegisterLiteral(lua_State* L) {
+	LUA_START(list, luaI_literal)
+		LUA_CONST(_NAME)
+		LUA_CONST(_VERSION)
+		LUA_CONST(_COPYRIGHT)
+	LUA_END()
+
+	for (int i = 0; list[i].name != NULL; i++) {
+		lua_pushlstring(L, list[i].value, strlen(list[i].value));
 		lua_setfield(L, -2, list[i].name);
 	}
 }
@@ -104,6 +122,7 @@ extern "C" LUALIB_OPEN() {
 
 	// Set constants
 	luaF_RegisterConst(L);
+	luaF_RegisterLiteral(L);
 
 	// Create a meta table for the script data to be collected upon script interruption
 	luaL_newmetatable(L, LUALIB_TABLE);

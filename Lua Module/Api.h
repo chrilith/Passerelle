@@ -32,6 +32,11 @@ typedef struct {
 	int value;
 } luaI_const;
 
+typedef struct {
+	const char *name;
+	const char *value;
+} luaI_literal;
+
 #define LUA_CONST(x)	{ #x, x },
 
 #define LUA_FUNC(x)		int luaX_##x(lua_State* L)
