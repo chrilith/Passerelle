@@ -13,12 +13,22 @@
 // Converts lower case first letter function name to upper case for compatibility with old code
 static const char *__legacy = "\
 	if (saitek ~= nil) then \n\
-		passerelle = saitek \n\
-		for key,value in pairs(passerelle) do \n\
-			upper = string.upper(string.sub(key, 1, 1)) .. string.sub(key, 2) \n\
-			saitek[upper] = passerelle[key] \n\
+	passerelle = saitek; \n\
+	local list = {}; \n\
+	for key,value in pairs(passerelle) do \n\
+		list[key] = value; \n\
+	end \n\
+	for key,value in pairs(list) do \n\
+		local char = string.sub(key, 1, 1); \n\
+		if (char ~= string.upper(char)) then \n\
+			local upper = string.upper(char) .. string.sub(key, 2) \n\
+			saitek[upper] = function(...) \n\
+				print(\"" LUALIB_NAME ": the method '\" .. upper .. \"' is obsolete\"); \n\
+				return passerelle[key](...); \n\
+			end \n\
 		end \n\
-	end";
+	end \n\
+end";
 
 #endif
 
