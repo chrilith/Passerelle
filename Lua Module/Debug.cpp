@@ -2,11 +2,7 @@
 #include "lua.hpp"
 #include <tchar.h>
 
-#ifdef _DEBUG
-
-EXTERN_C IMAGE_DOS_HEADER __ImageBase;
-
-void DebugL(lua_State* L, const char *format, ...) {
+void TraceL(lua_State* L, const char *format, ...) {
 	CHAR buf[1024];
 
 	va_list vargs;
@@ -19,6 +15,10 @@ void DebugL(lua_State* L, const char *format, ...) {
 	lua_pushstring(L, buf);
 	lua_call(L, 1, 0);
 }
+
+#ifdef _DEBUG
+
+EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
 void DebugC(wchar_t *format, ...) {
 	TCHAR buf[1024];
