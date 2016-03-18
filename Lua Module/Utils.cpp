@@ -5,6 +5,10 @@
 namespace Utils {
 
 int CharToWideConverter(const char *s, wchar_t **d) {
+	if (s == NULL) {
+		*d = NULL;
+		return 0;
+	}
 	size_t baseSize = strlen(s) + 1;
 	size_t convertedChars = 0;
 
