@@ -71,5 +71,6 @@ LUA_FUNC(setProfile);
 LUA_FUNC(poll);
 LUA_FUNC(sleep);
 LUA_FUNC(setMode);
+LUA_FUNC(captureWindow);
 
 #endif
