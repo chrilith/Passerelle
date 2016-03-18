@@ -22,7 +22,7 @@ void RenderStretchedImage(HDC hdc, LPCTSTR tsz) {
 	CImage image;
 	HRESULT hr = image.Load(tsz);
 	if (SUCCEEDED(hr)) {
-		int old = SetStretchBltMode(hdc, COLORONCOLOR);
+		int old = SetStretchBltMode(hdc, HALFTONE);
 		image.StretchBlt(hdc, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SRCCOPY);
 		SetStretchBltMode(hdc, old);
 	}
