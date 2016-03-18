@@ -64,7 +64,7 @@ LUA_FUNC(getSize) {
 	return 2;
 }
 
-LUA_FUNC(toGd2) {
+LUA_FUNC(gd2Str) {
 	Image *p = luaF_BitmapCheck(L, 1);
 
 	int size;
@@ -78,7 +78,7 @@ LUA_FUNC(toGd2) {
 int luaF_RegisterBitmap(lua_State *L) {
 	LUA_START(METHODS, luaL_reg)
 		LUA_ENTRY(getSize)
-		LUA_ENTRY(toGd2)
+		LUA_ENTRY(gd2Str)
 	LUA_END()
 
 	LUA_START(META, luaL_reg)
