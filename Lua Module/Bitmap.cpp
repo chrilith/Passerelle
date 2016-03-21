@@ -26,7 +26,7 @@ Image *luaF_BitmapCheck(lua_State *L, int index) {
 	Image **p = (Image **)luaL_checkudata(L, index, META_BITMAP);
 
 	if ( p == NULL)	{ luaL_typerror(L, index, META_BITMAP); }
-	if (*p == NULL)	{ luaL_error(L, "null Capture"); }
+	if (*p == NULL)	{ luaL_error(L, "Null " META_BITMAP); }
 
 	return *p;
 }
@@ -45,18 +45,18 @@ int luaF_BitmapCaptureFromWindow(lua_State *L, HWND winH, LONG x, LONG y, LONG w
 	return 1;
 }
 
-LUA_FUNC(__gc) {
+LUA_SFUNC(__gc) {
 	Image *p = luaF_BitmapGet(L, 1);
 	if (p) { delete p; }
 	return 0;
 }
 
-LUA_FUNC(__tostring) {
-	lua_pushfstring(L, "Image: %x", lua_touserdata(L, 1));
+LUA_SFUNC(__tostring) {
+	lua_pushfstring(L, "Image: %p", lua_touserdata(L, 1));
 	return 1;
 }
 
-LUA_FUNC(getSize) {
+LUA_SFUNC(getSize) {
 	Image *p = luaF_BitmapCheck(L, 1);
 
 	lua_pushnumber(L, p->Width());
@@ -64,7 +64,7 @@ LUA_FUNC(getSize) {
 	return 2;
 }
 
-LUA_FUNC(gd2Str) {
+LUA_SFUNC(gd2Str) {
 	Image *p = luaF_BitmapCheck(L, 1);
 
 	int size;
@@ -90,7 +90,7 @@ int luaF_RegisterBitmap(lua_State *L) {
 	Supposed to be into the table on the top of the stack
 	but what is this table?
 	*/
-	luaL_openlib(L, NULL, METHODS, 0);
+	luaL_openlib(L, TYPE_BITMAP, METHODS, 0);
 
 	// http://lua-users.org/wiki/UserDataWithPointerExample
 

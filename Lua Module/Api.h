@@ -40,6 +40,7 @@ typedef struct {
 #define LUA_CONST(x)	{ #x, x },
 
 #define LUA_FUNC(x)		int luaX_##x(lua_State* L)
+#define LUA_SFUNC(x)	static LUA_FUNC(x)
 #define LUA_OBSOLETE(x)	int luaX_##x(lua_State* L) { \
 							TraceL(L, LUALIB_NAME ": the method '" #x "' is obsolete"); \
 							return 0; \
