@@ -1,6 +1,7 @@
 #include "Config.h"
 #include "Common.h"
 #include "Bitmap.h"
+#include "Window.h"
 #include "lua.hpp"
 #include "Script.h"
 #include "Api.h"
@@ -92,7 +93,7 @@ extern "C" LUALIB_OPEN() {
 		LUA_ENTRY(poll)
 		LUA_ENTRY(sleep)
 		// New in v0.8
-		LUA_ENTRY(captureWindow)
+		LUA_ENTRY(findWindow)
 		// Obsolete
 		LUA_ENTRY(Initialize)
 		LUA_ENTRY(Release)
@@ -129,6 +130,7 @@ extern "C" LUALIB_OPEN() {
 
 	// Initialize the internal bitmap context
 	luaF_RegisterBitmap(L);
+	luaF_RegisterWindow(L);
 
 	// Create the associated userdata
 	ScriptInfo **dataP = (ScriptInfo **)lua_newuserdata(L, sizeof(ScriptInfo **));

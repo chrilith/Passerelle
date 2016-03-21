@@ -4,7 +4,9 @@
 #include "Api.h"
 #include "Utils.h"
 #include "Bitmap.h"
+
 #include "Image.h"
+#include "Window.h"
 
 #include "lua.hpp"
 
@@ -571,20 +573,15 @@ LUA_FUNC(setImage) {
 	return 1;
 }
 
-LUA_FUNC(captureWindow) {
+LUA_FUNC(findWindow) {
 	int p = lua_gettop(L);
-//	DebugL(L, "captureWindow %d", p);
 
 	if (/* Base signature */
-		!(p == 6 &&
-			(	lua_isstring(L, 1) ||
+		!(p == 2 &&
+			(lua_isstring(L, 1) ||
 				lua_isnil(L, 1)) &&		// class name
-			(	lua_isstring(L, 2) ||
-				lua_isnil(L, 2)) &&		// window name
-			lua_isnumber(L, 3) &&		// x offset
-			lua_isnumber(L, 4) &&		// y offset
-			lua_isnumber(L, 5) &&		// width
-			lua_isnumber(L, 6))			// height
+			(lua_isstring(L, 2) ||
+				lua_isnil(L, 2)))		// window name
 		) {
 		return 0;
 	}
@@ -601,30 +598,8 @@ LUA_FUNC(captureWindow) {
 		return 0;
 	}
 
-	// Copy size in %
-	double x = lua_tonumber(L, 3);
-	double y = lua_tonumber(L, 4);
-	double width = lua_tonumber(L, 5);
-	double height = lua_tonumber(L, 6);
-
-	RECT rect;
-	GetClientRect(winH, &rect);
-
-	POINT pt, pt2;
-	pt.x = rect.left;
-	pt.y = rect.top;
-	pt2.x = rect.right + 1;
-	pt2.y = rect.bottom + 1;
-
-	int ww = (pt2.x - pt.x + 1);
-	int wh = (pt2.y - pt.y + 1);
-
-	int cx = rect.left +(LONG)(x * ww / 100.0);
-	int cy = rect.top +(LONG)(y * wh / 100.0);
-	int cw = (LONG)(width * ww / 100.0);
-	int ch = (LONG)(height * wh / 100.0);
-
-	return luaF_BitmapCaptureFromWindow(L, winH, cx, cy, cw, ch);
+	luaF_WindowPush(L, winH);
+	return 1;
 }
 
 LUA_FUNC(setString) {

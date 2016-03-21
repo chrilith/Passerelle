@@ -18,7 +18,10 @@
 #define LUALIB_OPEN( )	int __declspec(dllexport) __cdecl _LIB_OPEN (lua_State* L)
 
 #define META_BITMAP	_LIB_NAME "BITMAP"
+#define META_WINDOW	_LIB_NAME "WINDOW"
+
 #define TYPE_BITMAP	_LIB_NAME "..__Bitmap"
+#define TYPE_WINDOW	_LIB_NAME "..__Window"
 
 #define DIRECTINPUT_VERSION 0x0800
 
