@@ -132,7 +132,7 @@ LUA_SFUNC(setSize) {
 	ww += cw - 1;
 	wh += ch - 1;
 	// If the window menu is very long, it may be displayed on multiple lines
-	// when reducing the size of the window. Use may have to call this function twice
+	// when reducing the size of the window. User may have to call this function twice
 	// to properly size the window.
 	SetWindowPos(winH, 0, 0, 0, ww, wh, SWP_NOMOVE | SWP_NOZORDER);
 
