@@ -122,8 +122,8 @@ LUA_SFUNC(setSize) {
 	RECT rw, rc;
 
 	GetClientRect(winH, &rc);
-	int cw = w - (rc.right - rc.left + 1);
-	int ch = h - (rc.bottom - rc.top + 1);
+	int cw = (int)(w - (rc.right - rc.left + 1));
+	int ch = (int)(h - (rc.bottom - rc.top + 1));
 
 	GetWindowRect(winH, &rw);
 	int ww = rw.right + rw.left + 1;
