@@ -3,13 +3,14 @@
 #include "resource.h"
 #include "Api.h"
 #include "Utils.h"
+#include "Bitmap.h"
 
-#include "Import/Source/RawImage.h"
+#include "Image.h"
+#include "Window.h"
+
 #include "lua.hpp"
 
 #include "CallbackHandler.h"
-
-#define GD_HEADER_SIZE 24
 
 extern int HIDCount;
 extern SaitekDevice HID[HID_COUNT];
@@ -500,11 +501,11 @@ LUA_FUNC(setImageFromFile) {
 	if (!shouldStrech) {
 		h = DevMan->DO()->SetImageFromFile(HID[devIdx].hDevice, pageID, imgIdx, len, fileNameWideP);
 	} else {
-		CRawImage img;
+		Image img;
 		HDC hdc = img.BeginPaint();
 		Utils::RenderStretchedImage(hdc, fileNameWideP);
 		img.EndPaint();
-		h = DevMan->DO()->SetImage(HID[devIdx].hDevice, pageID, imgIdx, SCREEN_BUFSIZE, img.Buffer());
+		h = DevMan->DO()->SetImage(HID[devIdx].hDevice, pageID, imgIdx, SCREEN_BUFSIZE, img.Bits());
 	}
 	free(fileNameWideP);
 	lua_pushnumber(L, GetAPIError(h));
@@ -522,37 +523,82 @@ LUA_FUNC(setImage) {
 			lua_isnumber(L, 2) &&		// Model Index
 			lua_isnumber(L, 3) &&		// Page ID
 			lua_isnumber(L, 4) &&		// Image Index
-			lua_isstring(L, 5))			// Image Data
+			(	lua_isstring(L, 5) ||
+				lua_isuserdata(L, 5))	// Image Data
+		)
 	) { return 0; }
 
 	const char *devMod = lua_tostring(L, 1);
 	int devIdx = (int)lua_tonumber(L, 2);
 	int pageID = (int)lua_tonumber(L, 3);
 	int imgIdx = (int)lua_tonumber(L, 4) - 1;	// Index 1..n in Lua
-	const char *dataP = lua_tostring(L, 5);
 
 	devIdx = HIDLookupByType(devMod, devIdx);
 	if (!(devIdx >= 0 && devIdx < HIDCount && HID[devIdx].isActive))
 		return 0;
-	if (!dataP)
-		return 0;
 
-	// GD only
-	char img[SCREEN_BUFSIZE];
-	dataP += GD_HEADER_SIZE;
+	HRESULT h;
+	Image *render;
+	bool clean = true;
 
-	for (int y = 0; y < SCREEN_HEIGHT; y++) {
-		for (int x = 0; x < SCREEN_WIDTH; x++) {
-			int a = (x + y * SCREEN_WIDTH) * 3;
-			int b = (x + ((SCREEN_HEIGHT - 1) - y) * SCREEN_WIDTH) * 4;
+	if (lua_isstring(L, 5)) {
+		const char *dataP = lua_tostring(L, 5);
+		if (!dataP) {
+			return 0;
+		}
+		// Convert from 32-bit to 24-bit
+		Image srgb(dataP);
+		render = new Image();
+		render->Blit(&srgb);
 
-			*(img + a + 0) = *(dataP + b + 2);
-			*(img + a + 1) = *(dataP + b + 1);
-			*(img + a + 2) = *(dataP + b + 0);
+	} else {
+		Image *image = luaF_BitmapCheck(L, 5);
+		if (!image) {
+			return 0;
+		}
+		if (image->Width() == SCREEN_WIDTH && image->Height() == SCREEN_HEIGHT) {
+			render = image;
+			clean = false;
+		} else {
+			render = new Image();
+			render->Blit(image);
 		}
 	}
-	HRESULT h = DevMan->DO()->SetImage(HID[devIdx].hDevice, pageID, imgIdx, sizeof(img), img);
+
+	h = DevMan->DO()->SetImage(HID[devIdx].hDevice, pageID, imgIdx, SCREEN_BUFSIZE, render->Bits());
+	if (clean) {
+		delete render;
+	}
 	lua_pushnumber(L, GetAPIError(h));
+	return 1;
+}
+
+LUA_FUNC(findWindow) {
+	int p = lua_gettop(L);
+
+	if (/* Base signature */
+		!(p == 2 &&
+			(lua_isstring(L, 1) ||
+				lua_isnil(L, 1)) &&		// class name
+			(lua_isstring(L, 2) ||
+				lua_isnil(L, 2)))		// window name
+		) {
+		return 0;
+	}
+
+	wchar_t *lpClassName, *lpWindowName;
+	const char *className = lua_tostring(L, 1);
+	const char *winName = lua_tostring(L, 2);
+
+	Utils::CharToWideConverter(className, &lpClassName);
+	Utils::CharToWideConverter(winName, &lpWindowName);
+
+	HWND winH = FindWindow(lpClassName, lpWindowName);
+	if (!winH) {
+		return 0;
+	}
+
+	luaF_WindowPush(L, winH);
 	return 1;
 }
 
