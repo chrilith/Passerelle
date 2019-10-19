@@ -66,8 +66,8 @@ LUA_SFUNC(capture) {
 	POINT pt, pt2;
 	pt.x = rect.left;
 	pt.y = rect.top;
-	pt2.x = rect.right + 1;
-	pt2.y = rect.bottom + 1;
+	pt2.x = rect.right;
+	pt2.y = rect.bottom;
 
 	int ww = (pt2.x - pt.x + 1);
 	int wh = (pt2.y - pt.y + 1);
