@@ -80,6 +80,65 @@ LUA_SFUNC(capture) {
 	return luaF_BitmapCaptureFromWindow(L, winH, cx, cy, cw, ch);
 }
 
+
+LUA_SFUNC(setPosition) {
+	HWND winH = luaF_WindowCheck(L, 1);
+	if (!winH) { return 0; }
+
+	int p = lua_gettop(L);
+
+	if (/* Base signature */
+		!(p == 3 &&
+			lua_isnumber(L, 2) &&		// x position
+			lua_isnumber(L, 3))			// y position
+		) {
+		return 0;
+	}
+
+	double x = lua_tonumber(L, 2);
+	double y = lua_tonumber(L, 3);
+
+	SetWindowPos(winH, 0, (int)x, (int)y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+	return 0;
+}
+
+LUA_SFUNC(setSize) {
+	HWND winH = luaF_WindowCheck(L, 1);
+	if (!winH) { return 0; }
+
+	int p = lua_gettop(L);
+
+	if (/* Base signature */
+		!(p == 3 &&
+			lua_isnumber(L, 2) &&		// width
+			lua_isnumber(L, 3))			//height
+		) {
+		return 0;
+	}
+
+	double w = lua_tonumber(L, 2);
+	double h = lua_tonumber(L, 3);
+
+	RECT rw, rc;
+
+	GetClientRect(winH, &rc);
+	int cw = w - (rc.right - rc.left + 1);
+	int ch = h - (rc.bottom - rc.top + 1);
+
+	GetWindowRect(winH, &rw);
+	int ww = rw.right + rw.left + 1;
+	int wh = rw.bottom + rw.top + 1;
+
+	ww += cw - 1;
+	wh += ch - 1;
+	// If the window menu is very long, it may be displayed on multiple lines
+	// when reducing the size of the window. Use may have to call this function twice
+	// to properly size the window.
+	SetWindowPos(winH, 0, 0, 0, ww, wh, SWP_NOMOVE | SWP_NOZORDER);
+
+	return 0;
+}
+
 LUA_SFUNC(isValid) {
 	HWND winH = luaF_WindowCheck(L, 1);
 
@@ -87,11 +146,73 @@ LUA_SFUNC(isValid) {
 	return 1;
 }
 
+LUA_SFUNC(isMinimized) {
+	HWND winH = luaF_WindowCheck(L, 1);
+
+	lua_pushboolean(L, winH && IsIconic(winH));
+	return 1;
+}
+
+LUA_SFUNC(isMaximized) {
+	HWND winH = luaF_WindowCheck(L, 1);
+
+	lua_pushboolean(L, winH && IsZoomed(winH));
+	return 1;
+}
+
+LUA_SFUNC(minimize) {
+	HWND winH = luaF_WindowCheck(L, 1);
+	if (!winH) { return 0; }
+	ShowWindow(winH, SW_FORCEMINIMIZE);
+	return 0;
+}
+
+LUA_SFUNC(maximize) {
+	HWND winH = luaF_WindowCheck(L, 1);
+	if (!winH) { return 0; }
+	ShowWindow(winH, SW_MAXIMIZE);
+	return 0;
+}
+
+LUA_SFUNC(restore) {
+	HWND winH = luaF_WindowCheck(L, 1);
+	if (!winH) { return 0; }
+	ShowWindow(winH, SW_RESTORE);
+	return 0;
+}
+
+LUA_SFUNC(getSize) {
+	HWND winH = luaF_WindowCheck(L, 1);
+
+	int w = 0;
+	int h = 0;
+
+	if (winH) {
+		RECT r;
+		GetClientRect(winH, &r);
+		w = r.right - r.left + 1;
+		h = r.bottom - r.top + 1;
+	}
+
+	lua_pushnumber(L, w);
+	lua_pushnumber(L, h);
+	return 2;
+}
+
+
 int luaF_RegisterWindow(lua_State *L) {
 	LUA_START(METHODS, luaL_reg)
 		LUA_ENTRY(capture)
+		LUA_ENTRY(setPosition)
+		LUA_ENTRY(setSize)
 		LUA_ENTRY(isValid)
-	LUA_END()
+		LUA_ENTRY(isMinimized)
+		LUA_ENTRY(isMaximized)
+		LUA_ENTRY(minimize)
+		LUA_ENTRY(maximize)
+		LUA_ENTRY(restore)
+		LUA_ENTRY(getSize)
+		LUA_END()
 
 	LUA_START(META, luaL_reg)
 		// Nothing to gc
