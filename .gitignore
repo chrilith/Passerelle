@@ -8,6 +8,7 @@ Test
 *.lo
 *.o
 *.obj
+*.db
 
 # Precompiled Headers
 *.gch
