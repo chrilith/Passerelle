@@ -4,7 +4,7 @@
 #include <Windows.h>
 #include <dinput.h>
 
-#include "Import/Source/DirectOutputImpl.h"
+#include "CDirectOutput.h"
 #include "Import/Source/ThreadLock.h"
 
 #define HID_COUNT		10

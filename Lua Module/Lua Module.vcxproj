@@ -194,7 +194,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Libs\Saitek\Import\Source\DirectOutputImpl.cpp" />
     <ClCompile Include="..\Libs\Saitek\Import\Source\RawImage.cpp" />
     <ClCompile Include="..\Libs\Saitek\Import\Source\ThreadLock.cpp" />
     <ClCompile Include="Api.cpp" />
@@ -203,6 +202,7 @@
     <ClCompile Include="CallbackHandler.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="CDirectOutput.cpp" />
     <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="Device.cpp" />
@@ -212,7 +212,6 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Libs\Saitek\Import\Source\DirectOutputImpl.h" />
     <ClInclude Include="..\Libs\Saitek\Import\Source\RawImage.h" />
     <ClInclude Include="..\Libs\Saitek\Import\Source\ThreadLock.h" />
     <ClInclude Include="..\Libs\Saitek\Include\DirectOutput.h" />
@@ -223,6 +222,7 @@
     <ClInclude Include="CallbackHandler.h" />
     <ClInclude Include="CallbackLua.h" />
     <ClInclude Include="Bitmap.h" />
+    <ClInclude Include="CDirectOutput.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Data.h" />
