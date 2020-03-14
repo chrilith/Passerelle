@@ -5,8 +5,6 @@ Passerelle, formerly known as "Saitek Flight Panels for Lua", is a Lua module to
 
 Back in 2011, the motivation was to allow Flight Simulator 2004 users to use the FIP with the simulator using Pete Dowson's [FSUIPC](http://www.schiratti.com/dowson.html) and its Lua scripting capabilities. This module can now be used in a wide range of games and flight simulators integrating a Lua scripting engine.
 
-http://www.passerelle.io/
-
 Documentation
 -------------
 
